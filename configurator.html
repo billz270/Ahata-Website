@@ -1044,8 +1044,8 @@ function computeEffectiveImageBox(){
 }
 
 function fitImageToPanel(){
-  const pw = panelFace.offsetWidth;
-  const ph = panelFace.offsetHeight;
+  const pw = panelFace.clientWidth;
+  const ph = panelFace.clientHeight;
   panelImage.style.width = imgNaturalW + 'px';
   panelImage.style.height = imgNaturalH + 'px';
   // Compute scale accounting for current rotation (natural W/H may need to swap)
@@ -1056,7 +1056,7 @@ function fitImageToPanel(){
   // uploads an image that was specifically prepared for the panel's exact dimensions.
   const panelAspect = pw / ph;
   const imageAspect = natW_eff / natH_eff;
-  const aspectsMatch = Math.abs(panelAspect - imageAspect) / panelAspect < 0.01;
+  const aspectsMatch = Math.abs(panelAspect - imageAspect) / panelAspect < 0.10;
   const fitScale = aspectsMatch
     ? Math.min(pw / natW_eff, ph / natH_eff)  // contain — no clip
     : Math.max(pw / natW_eff, ph / natH_eff); // cover — fill, may clip
@@ -1070,8 +1070,8 @@ function fitImageToPanel(){
 
 function recenterImage(){
   // Keep current zoom + rotate + flip; just re-center
-  const pw = panelFace.offsetWidth;
-  const ph = panelFace.offsetHeight;
+  const pw = panelFace.clientWidth;
+  const ph = panelFace.clientHeight;
   const box = computeEffectiveImageBox();
   imgPos.x = (pw - box.w) / 2;
   imgPos.y = (ph - box.h) / 2;
@@ -1079,8 +1079,8 @@ function recenterImage(){
 }
 
 function clampImagePosition(){
-  const pw = panelFace.offsetWidth;
-  const ph = panelFace.offsetHeight;
+  const pw = panelFace.clientWidth;
+  const ph = panelFace.clientHeight;
   const box = computeEffectiveImageBox();
   if(box.w >= pw){
     imgPos.x = Math.max(pw - box.w, Math.min(0, imgPos.x));
