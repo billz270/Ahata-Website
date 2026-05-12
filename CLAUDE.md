@@ -129,11 +129,10 @@ The configurator's `renderCartCardPreview` and the visualizer's `computeArtTrans
 _(none)_
 
 ### Medium Priority
-1. **"Start Another" scroll position** — After saving a panel, clicking "Start Another" scrolls down instead of to top.
-2. **"Your Panels" interaction** — Can't click tiles to view in preview; must click Edit to see again.
-3. **"Your Panels" tile sizing glitch** — 4×2 vertical cards have proper buttons, smaller ones have empty space underneath.
-4. **"Your Designs" positioning (test)** — Explore moving section to right side with default sizes above/below.
-5. **"Your Designs" right border** — Tiles don't have right-hand border; looks incomplete.
+1. **"Your Panels" interaction** — Can't click tiles to view in preview; must click Edit to see again.
+2. **"Your Panels" tile sizing glitch** — 4×2 vertical cards have proper buttons, smaller ones have empty space underneath.
+3. **"Your Designs" positioning (test)** — Explore moving section to right side with default sizes above/below.
+4. **"Your Designs" right border** — Tiles don't have right-hand border; looks incomplete.
 
 ### Design/Brand (future)
 1. **Logo refresh** — Waiting for new logo from designer friend. Current horizontal logo will be replaced.
@@ -152,6 +151,8 @@ _(none)_
 - **Placement cursor lock in visualizer** ✓ — Root cause: after placing the last copy of a designed panel, placement mode was never exited and `updateArmedState()` wasn't called after each placement, so the crosshair cursor and hint text stayed active indefinitely. Fix: auto-exit placement mode when remaining count hits 0, allow clicking an active designed card to deselect even at 0 remaining (matching size-chip toggle behaviour), and call `updateArmedState()` after every placement. (`room-visualizer.html`)
 
 - **Equal-distance alignment arrows** ✓ — Root cause: no equal-distance detection existed; only edge/center snapping was implemented. Fix: added equal-distance snap for all 3 configurations (sandwiched, rightmost, leftmost panel) on both X and Y axes. Shows double-headed arrows (↔/↕) in each equal gap rather than a full-wall line. Full-wall scan on every drag tick so all equal-gap runs across all panels are highlighted simultaneously. (`room-visualizer.html`)
+
+- **"Start Another" scroll position** ✓ — Two compounding issues: (1) `updateCart()` expanding the cart section caused a layout reflow after `scrollTo({top:0})` fired, drifting the page down — fixed by wrapping the scroll in `requestAnimationFrame`; (2) sticky nav (56px) overlapped the designer section's top, hiding the orientation toggle — fixed by adding `scroll-margin-top:64px` to `.designer`. (`configurator.html`)
 
 - **Horizontal logo sizing and background blending** ✓ — Three compounding issues: (1) CSS `height: 32px` too small; (2) `viewBox="0 0 1874.9 750"` had ~258 units of blank margin top/bottom so the actual content (y≈258–492) rendered at only ~10px; (3) Inkscape baked a `<g fill="#fff">` background rect into the SVG which appeared as a white rectangle in the nav (the `style="fill:#f2f2f9"` override was stripped when inlining). Fix: trimmed viewBox to `"0 258 1874.9 234"` (exact content bounds), set nav `padding: 0 32px`, set `height: 56px`, and removed the background rect group and its clipPath def. Applied to all 5 HTML files and the asset SVG.
 
