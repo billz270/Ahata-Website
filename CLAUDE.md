@@ -123,12 +123,37 @@ The configurator's `renderCartCardPreview` and the visualizer's `computeArtTrans
 
 ---
 
-## Known issues / not yet validated
+## Issues & Backlog
 
-1. **1×4 panel sync** — math works on paper, but user testing has been inconsistent. Reproduce by uploading a 1200×4800 image into a 1×4 panel, saving, and opening visualizer. Should not clip or recenter.
-2. **Replace button** — fixed by removing `setTimeout` wrapper around `fileInput.click()`. Setting timeout broke the user-gesture chain on touch browsers. Test on actual touch device.
-3. **Equal-distance arrows** for alignment (PowerPoint-style) — not implemented. Edge/center snapping IS implemented.
-4. **Real product photos** — not yet uploaded. Hero showcase grid currently uses SVG mockups. Replace with real workshop/panel photos when available.
+### Resolved (recent sessions)
+1. **1×4 panel sync** — localStorage overflow when 6+ designs created. Fixed by [description of fix].
+2. **Image clipping on exact aspect ratio** — [description of fix].
+
+### High Priority
+1. **Placement cursor lock in visualizer** — After placing a designed panel, no way to exit placement mode. Must click a size button twice to get normal cursor back.
+2. **Equal-distance alignment arrows** — Not implemented in visualizer. Only edge/center snapping exists.
+3. **Horizontal logo sizing** — Logo doesn't fill header properly; appears too small.
+
+### Medium Priority
+1. **"Start Another" scroll position** — After saving a panel, clicking "Start Another" scrolls down instead of to top.
+2. **"Your Panels" interaction** — Can't click tiles to view in preview; must click Edit to see again.
+3. **"Your Panels" tile sizing glitch** — 4×2 vertical cards have proper buttons, smaller ones have empty space underneath.
+4. **"Your Designs" positioning (test)** — Explore moving section to right side with default sizes above/below.
+5. **"Your Designs" right border** — Tiles don't have right-hand border; looks incomplete.
+
+### Design/Brand (future)
+1. **Logo refresh** — Waiting for new logo from designer friend. Current horizontal logo will be replaced.
+2. **Three-tone color approach** — New gradient colors to be implemented when finalized. Keep current for now.
+3. **Website layout revisit** — After logo and color finalization.
+
+### Not Yet Tackled
+1. **Panel preview sizes** — 1×1 and 2×1 load relatively small by default. Consider enlarging.
+
+## Resolved bugs
+
+- **Designed panels missing in visualizer** ✓ — Root cause: raw base64 images (4–8 MB each) silently exceeded localStorage's 5 MB cap; `saveCart()` swallowed the `QuotaExceededError` with an empty catch. Fix: compress images to max 1200px / JPEG 0.82 on upload (~200 KB each), and surface the error to the user if quota is ever hit again. (`configurator.html`, `handleImageUpload` + `saveCart`)
+
+- **Image edge clipping on upload** ✓ — Root cause: `fitImageToPanel`, `recenterImage`, and `clampImagePosition` used `panelFace.offsetWidth/offsetHeight` (which includes the 1.5px border) to calculate fit scale, causing the image to be scaled 2px too large and clipped by `overflow: hidden`. Fix: switched to `clientWidth/clientHeight` (border excluded). (`configurator.html`)
 
 ---
 

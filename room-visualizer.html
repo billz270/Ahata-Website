@@ -769,10 +769,10 @@ function renderDesignedPanels(){
         </div>
       </div>`;
     card.addEventListener('click',()=>{
-      if(remaining <= 0) return;
       if(state.selectedDesignedId === panel.id){
         state.selectedDesignedId = null;
       } else {
+        if(remaining <= 0) return;
         state.selectedDesignedId = panel.id;
         state.selectedSize = null;
         document.querySelectorAll('.size-chip').forEach(c=>c.classList.remove('active'));
@@ -1267,10 +1267,16 @@ function placePanelAt(clientX, clientY){
   const placedPanel = {id: Date.now() + Math.random(), wall: state.activeWall, size, w: panelWft, h: panelHft, price, x, y, designedId, image};
   if(designedSnap) Object.assign(placedPanel, designedSnap);
   state.panels.push(placedPanel);
+  if(designedId !== null){
+    const nowPlaced = state.panels.filter(p=>p.designedId===designedId).length;
+    const src = state.designedCart.find(p=>p.id===designedId);
+    if(src && nowPlaced >= src.quantity) state.selectedDesignedId = null;
+  }
   renderActivePanels();
   renderThumbnails();
   renderDesignedPanels();
   updateStats();
+  updateArmedState();
 }
 
 function renderActivePanels(){
