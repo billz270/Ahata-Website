@@ -74,7 +74,7 @@
   .size-card.custom .size-visual svg{stroke:var(--ink);fill:none;stroke-width:1.5;transition:stroke 0.25s}
   .size-card.custom:hover .size-visual svg,.size-card.custom.selected .size-visual svg{stroke:var(--paper)}
 
-  .designer{display:none;grid-template-columns:minmax(0,1fr) 280px;border-bottom:1.5px solid var(--ink)}
+  .designer{display:none;grid-template-columns:minmax(0,1fr) 280px;border-bottom:1.5px solid var(--ink);scroll-margin-top:64px}
   .designer.active{display:grid}
   .preview-area{padding:20px 28px 24px;border-right:1.5px solid var(--ink);background:linear-gradient(to right,rgba(0,23,31,0.04) 1px,transparent 1px),linear-gradient(to bottom,rgba(0,23,31,0.04) 1px,transparent 1px);background-size:20px 20px;display:flex;flex-direction:column;gap:14px;min-width:0}
 
@@ -1270,7 +1270,7 @@ $('addMoreBtn').addEventListener('click',()=>{
   resetCurrentPanel();
   updateCart();
   currentPanelNum.textContent = String(getTotalPanelCount() + 1).padStart(2,'0');
-  window.scrollTo({top:0,behavior:'smooth'});
+  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
 });
 
 $('doneBtn').addEventListener('click',()=>{
