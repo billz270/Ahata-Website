@@ -130,9 +130,7 @@ The configurator's `renderCartCardPreview` and the visualizer's `computeArtTrans
 2. **Image clipping on exact aspect ratio** — [description of fix].
 
 ### High Priority
-1. **Placement cursor lock in visualizer** — After placing a designed panel, no way to exit placement mode. Must click a size button twice to get normal cursor back.
-2. **Equal-distance alignment arrows** — Not implemented in visualizer. Only edge/center snapping exists.
-3. **Horizontal logo sizing** — Logo doesn't fill header properly; appears too small.
+1. **Horizontal logo sizing** — Logo doesn't fill header properly; appears too small.
 
 ### Medium Priority
 1. **"Start Another" scroll position** — After saving a panel, clicking "Start Another" scrolls down instead of to top.
@@ -154,6 +152,10 @@ The configurator's `renderCartCardPreview` and the visualizer's `computeArtTrans
 - **Designed panels missing in visualizer** ✓ — Root cause: raw base64 images (4–8 MB each) silently exceeded localStorage's 5 MB cap; `saveCart()` swallowed the `QuotaExceededError` with an empty catch. Fix: compress images to max 1200px / JPEG 0.82 on upload (~200 KB each), and surface the error to the user if quota is ever hit again. (`configurator.html`, `handleImageUpload` + `saveCart`)
 
 - **Image edge clipping on upload** ✓ — Root cause: `fitImageToPanel`, `recenterImage`, and `clampImagePosition` used `panelFace.offsetWidth/offsetHeight` (which includes the 1.5px border) to calculate fit scale, causing the image to be scaled 2px too large and clipped by `overflow: hidden`. Fix: switched to `clientWidth/clientHeight` (border excluded). (`configurator.html`)
+
+- **Placement cursor lock in visualizer** ✓ — Root cause: after placing the last copy of a designed panel, placement mode was never exited and `updateArmedState()` wasn't called after each placement, so the crosshair cursor and hint text stayed active indefinitely. Fix: auto-exit placement mode when remaining count hits 0, allow clicking an active designed card to deselect even at 0 remaining (matching size-chip toggle behaviour), and call `updateArmedState()` after every placement. (`room-visualizer.html`)
+
+- **Equal-distance alignment arrows** ✓ — Root cause: no equal-distance detection existed; only edge/center snapping was implemented. Fix: added equal-distance snap for all 3 configurations (sandwiched, rightmost, leftmost panel) on both X and Y axes. Shows double-headed arrows (↔/↕) in each equal gap rather than a full-wall line. Full-wall scan on every drag tick so all equal-gap runs across all panels are highlighted simultaneously. (`room-visualizer.html`)
 
 ---
 
