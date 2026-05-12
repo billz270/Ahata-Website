@@ -185,6 +185,13 @@
   .snap-guide{position:absolute;pointer-events:none;z-index:40;background:var(--primary-light)}
   .snap-guide.vertical{width:1px}
   .snap-guide.horizontal{height:1px}
+  .eq-dist-arrow{position:absolute;pointer-events:none;z-index:40;background:var(--primary-light)}
+  .eq-dist-arrow.eq-h{height:1.5px}
+  .eq-dist-arrow.eq-h::before{content:'';position:absolute;left:0;top:-2px;border-top:2.5px solid transparent;border-bottom:2.5px solid transparent;border-right:4px solid var(--primary-light)}
+  .eq-dist-arrow.eq-h::after{content:'';position:absolute;right:0;top:-2px;border-top:2.5px solid transparent;border-bottom:2.5px solid transparent;border-left:4px solid var(--primary-light)}
+  .eq-dist-arrow.eq-v{width:1.5px}
+  .eq-dist-arrow.eq-v::before{content:'';position:absolute;top:0;left:-2px;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-bottom:4px solid var(--primary-light)}
+  .eq-dist-arrow.eq-v::after{content:'';position:absolute;bottom:0;left:-2px;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-top:4px solid var(--primary-light)}
 
   /* SIDEBAR */
   .sidebar{padding:22px 18px;display:flex;flex-direction:column;background:var(--paper);min-width:0}
@@ -995,9 +1002,6 @@ activeWallSurface.addEventListener('pointermove', e => {
         }
       });
     });
-    if(bestX){
-      allowedDx += bestX.diff;
-    }
     // Same for Y
     const yCandidates = [
       {ref: gMinY, axis:'top'},
@@ -1015,9 +1019,107 @@ activeWallSurface.addEventListener('pointermove', e => {
         }
       });
     });
-    if(bestY){
-      allowedDy += bestY.diff;
+
+    // Equal-distance X snap: 3-panel equal-gap in all configurations
+    let bestEqX = null;
+    {
+      const groupW = gMaxX - gMinX;
+      let leftN = null, rightN = null;
+      otherPanels.forEach(p => {
+        const re = p.x + p.w;
+        if(re <= gMinX && (!leftN || re > leftN.x + leftN.w)) leftN = p;
+        if(p.x >= gMaxX && (!rightN || p.x < rightN.x)) rightN = p;
+      });
+      if(leftN && rightN){
+        // Sandwiched: equal gap on both sides
+        const idealGMinX = ((leftN.x + leftN.w) + rightN.x - groupW) / 2;
+        const diff = idealGMinX - gMinX;
+        if(Math.abs(diff) < snapThresholdFtX)
+          bestEqX = { diff, gaps: [{ x1: leftN.x + leftN.w, x2: idealGMinX }, { x1: idealGMinX + groupW, x2: rightN.x }] };
+      } else if(leftN){
+        // Rightmost: match the gap between leftN and its own left neighbor
+        let leftLeftN = null;
+        otherPanels.forEach(p => {
+          const re = p.x + p.w;
+          if(re <= leftN.x && (!leftLeftN || re > leftLeftN.x + leftLeftN.w)) leftLeftN = p;
+        });
+        if(leftLeftN){
+          const gap = leftN.x - (leftLeftN.x + leftLeftN.w);
+          const idealGMinX = leftN.x + leftN.w + gap;
+          const diff = idealGMinX - gMinX;
+          if(Math.abs(diff) < snapThresholdFtX)
+            bestEqX = { diff, gaps: [{ x1: leftLeftN.x + leftLeftN.w, x2: leftN.x }, { x1: leftN.x + leftN.w, x2: idealGMinX }] };
+        }
+      } else if(rightN){
+        // Leftmost: match the gap between rightN and its own right neighbor
+        let rightRightN = null;
+        otherPanels.forEach(p => {
+          if(p.x >= rightN.x + rightN.w && (!rightRightN || p.x < rightRightN.x)) rightRightN = p;
+        });
+        if(rightRightN){
+          const gap = rightRightN.x - (rightN.x + rightN.w);
+          const idealGMaxX = rightN.x - gap;
+          const idealGMinX = idealGMaxX - groupW;
+          const diff = idealGMinX - gMinX;
+          if(Math.abs(diff) < snapThresholdFtX)
+            bestEqX = { diff, gaps: [{ x1: idealGMaxX, x2: rightN.x }, { x1: rightN.x + rightN.w, x2: rightRightN.x }] };
+        }
+      }
     }
+    // Equal-distance Y snap: 3-panel equal-gap in all configurations
+    let bestEqY = null;
+    {
+      const groupH = gMaxY - gMinY;
+      let topN = null, bottomN = null;
+      otherPanels.forEach(p => {
+        const be = p.y + p.h;
+        if(be <= gMinY && (!topN || be > topN.y + topN.h)) topN = p;
+        if(p.y >= gMaxY && (!bottomN || p.y < bottomN.y)) bottomN = p;
+      });
+      if(topN && bottomN){
+        // Sandwiched vertically
+        const idealGMinY = ((topN.y + topN.h) + bottomN.y - groupH) / 2;
+        const diff = idealGMinY - gMinY;
+        if(Math.abs(diff) < snapThresholdFtY)
+          bestEqY = { diff, gaps: [{ y1: topN.y + topN.h, y2: idealGMinY }, { y1: idealGMinY + groupH, y2: bottomN.y }] };
+      } else if(topN){
+        // Bottommost: match gap between topN and its own top neighbor
+        let topTopN = null;
+        otherPanels.forEach(p => {
+          const be = p.y + p.h;
+          if(be <= topN.y && (!topTopN || be > topTopN.y + topTopN.h)) topTopN = p;
+        });
+        if(topTopN){
+          const gap = topN.y - (topTopN.y + topTopN.h);
+          const idealGMinY = topN.y + topN.h + gap;
+          const diff = idealGMinY - gMinY;
+          if(Math.abs(diff) < snapThresholdFtY)
+            bestEqY = { diff, gaps: [{ y1: topTopN.y + topTopN.h, y2: topN.y }, { y1: topN.y + topN.h, y2: idealGMinY }] };
+        }
+      } else if(bottomN){
+        // Topmost: match gap between bottomN and its own bottom neighbor
+        let bottomBottomN = null;
+        otherPanels.forEach(p => {
+          if(p.y >= bottomN.y + bottomN.h && (!bottomBottomN || p.y < bottomBottomN.y)) bottomBottomN = p;
+        });
+        if(bottomBottomN){
+          const gap = bottomBottomN.y - (bottomN.y + bottomN.h);
+          const idealGMaxY = bottomN.y - gap;
+          const idealGMinY = idealGMaxY - groupH;
+          const diff = idealGMinY - gMinY;
+          if(Math.abs(diff) < snapThresholdFtY)
+            bestEqY = { diff, gaps: [{ y1: idealGMaxY, y2: bottomN.y }, { y1: bottomN.y + bottomN.h, y2: bottomBottomN.y }] };
+        }
+      }
+    }
+    // Apply best X snap — equal-distance wins if its delta is tighter or equal
+    const useEqX = bestEqX && (!bestX || Math.abs(bestEqX.diff) <= Math.abs(bestX.diff));
+    if(useEqX)       allowedDx += bestEqX.diff;
+    else if(bestX)   allowedDx += bestX.diff;
+    // Apply best Y snap
+    const useEqY = bestEqY && (!bestY || Math.abs(bestEqY.diff) <= Math.abs(bestY.diff));
+    if(useEqY)       allowedDy += bestEqY.diff;
+    else if(bestY)   allowedDy += bestY.diff;
 
     // Re-clamp after snap (in case snap pushed past wall edge)
     initPositions.forEach((ip, i) => {
@@ -1044,8 +1146,8 @@ activeWallSurface.addEventListener('pointermove', e => {
     });
 
     // Render snap guide lines
-    activeWallSurface.querySelectorAll('.snap-guide').forEach(g => g.remove());
-    if(bestX){
+    activeWallSurface.querySelectorAll('.snap-guide, .eq-dist-arrow').forEach(g => g.remove());
+    if(!useEqX && bestX){
       const guide = document.createElement('div');
       guide.className = 'snap-guide vertical';
       guide.style.left = (bestX.target * pxPerFtX) + 'px';
@@ -1053,7 +1155,7 @@ activeWallSurface.addEventListener('pointermove', e => {
       guide.style.height = '100%';
       activeWallSurface.appendChild(guide);
     }
-    if(bestY){
+    if(!useEqY && bestY){
       const guide = document.createElement('div');
       guide.className = 'snap-guide horizontal';
       guide.style.top = (bestY.target * pxPerFtY) + 'px';
@@ -1061,6 +1163,50 @@ activeWallSurface.addEventListener('pointermove', e => {
       guide.style.width = '100%';
       activeWallSurface.appendChild(guide);
     }
+    // Equal-distance arrows: scan ALL panels on wall for equal-gap runs
+    const allWallPanels = state.panels.filter(p => p.wall === state.activeWall);
+    const byX = [...allWallPanels].sort((a, b) => a.x - b.x);
+    const xArrows = new Map();
+    for(let i = 0; i < byX.length - 2; i++){
+      const gA = byX[i+1].x - (byX[i].x + byX[i].w);
+      const gB = byX[i+2].x - (byX[i+1].x + byX[i+1].w);
+      if(Math.abs(gA - gB) <= snapThresholdFtX){
+        const midY = (byX[i+1].y + byX[i+1].h / 2) * pxPerFtY;
+        const k1 = byX[i].x + byX[i].w, k2 = byX[i+1].x + byX[i+1].w;
+        if(!xArrows.has(k1)) xArrows.set(k1, { x1: byX[i].x + byX[i].w, x2: byX[i+1].x, midY });
+        if(!xArrows.has(k2)) xArrows.set(k2, { x1: byX[i+1].x + byX[i+1].w, x2: byX[i+2].x, midY });
+      }
+    }
+    xArrows.forEach(({ x1, x2, midY }) => {
+      if(x2 <= x1) return;
+      const arrow = document.createElement('div');
+      arrow.className = 'eq-dist-arrow eq-h';
+      arrow.style.left = (x1 * pxPerFtX) + 'px';
+      arrow.style.width = ((x2 - x1) * pxPerFtX) + 'px';
+      arrow.style.top = midY + 'px';
+      activeWallSurface.appendChild(arrow);
+    });
+    const byY = [...allWallPanels].sort((a, b) => a.y - b.y);
+    const yArrows = new Map();
+    for(let i = 0; i < byY.length - 2; i++){
+      const gA = byY[i+1].y - (byY[i].y + byY[i].h);
+      const gB = byY[i+2].y - (byY[i+1].y + byY[i+1].h);
+      if(Math.abs(gA - gB) <= snapThresholdFtY){
+        const midX = (byY[i+1].x + byY[i+1].w / 2) * pxPerFtX;
+        const k1 = byY[i].y + byY[i].h, k2 = byY[i+1].y + byY[i+1].h;
+        if(!yArrows.has(k1)) yArrows.set(k1, { y1: byY[i].y + byY[i].h, y2: byY[i+1].y, midX });
+        if(!yArrows.has(k2)) yArrows.set(k2, { y1: byY[i+1].y + byY[i+1].h, y2: byY[i+2].y, midX });
+      }
+    }
+    yArrows.forEach(({ y1, y2, midX }) => {
+      if(y2 <= y1) return;
+      const arrow = document.createElement('div');
+      arrow.className = 'eq-dist-arrow eq-v';
+      arrow.style.top = (y1 * pxPerFtY) + 'px';
+      arrow.style.height = ((y2 - y1) * pxPerFtY) + 'px';
+      arrow.style.left = midX + 'px';
+      activeWallSurface.appendChild(arrow);
+    });
   } else if(interaction.kind === 'marquee'){
     const rect = activeWallSurface.getBoundingClientRect();
     const curLocalX = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
@@ -1094,7 +1240,7 @@ activeWallSurface.addEventListener('pointerup', e => {
       const el = activeWallSurface.querySelector(`.placed-panel[data-panel-id="${p.id}"]`);
       if(el) el.classList.remove('dragging');
     });
-    activeWallSurface.querySelectorAll('.snap-guide').forEach(g => g.remove());
+    activeWallSurface.querySelectorAll('.snap-guide, .eq-dist-arrow').forEach(g => g.remove());
     if(interaction.moved){ renderThumbnails(); updateStats(); }
     syncSelectionDOM();
   } else if(interaction.kind === 'marquee'){
@@ -1113,7 +1259,7 @@ activeWallSurface.addEventListener('pointercancel', () => {
       const el = activeWallSurface.querySelector(`.placed-panel[data-panel-id="${p.id}"]`);
       if(el) el.classList.remove('dragging');
     });
-    activeWallSurface.querySelectorAll('.snap-guide').forEach(g => g.remove());
+    activeWallSurface.querySelectorAll('.snap-guide, .eq-dist-arrow').forEach(g => g.remove());
   }
   interaction = null;
 });
