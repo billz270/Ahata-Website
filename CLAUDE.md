@@ -129,7 +129,7 @@ The configurator's `renderCartCardPreview` and the visualizer's `computeArtTrans
 _(none)_
 
 ### Medium Priority
-1. **"Your Designs" right border** — Tiles don't have right-hand border; looks incomplete.
+_(none)_
 
 ### Design/Brand (future)
 1. **Logo refresh** — Waiting for new logo from designer friend. Current horizontal logo will be replaced.
@@ -156,6 +156,8 @@ _(none)_
 - **"Start Another" hides panel preview** ✓ — `resetCurrentPanel()` removed `active` from `.designer`, collapsing the live preview. Fix: save the current size before reset, then re-click the same size card to reactivate the designer. A `_skipDesignerScroll` flag suppresses `showDesigner()`'s built-in scroll so the page instead lands on `.size-section` (with `scroll-margin-top:64px` for nav clearance). (`configurator.html`)
 
 - **"Your Panels" tile sizing glitch** ✓ — Root cause: `min-height: 180px` on `.cart-preview` let the 4×2 vertical tile (160px 3D content + 36px padding = 196px) grow taller than all other tiles (clamped at 180px), causing the flex row to stretch shorter cards 16px extra with no mechanism to pin the buttons to the bottom. Fix: replaced `min-height: 180px` with fixed `height: 196px` so all tiles share the same dividing border; added `margin-top: auto` to `.cart-actions-row` to pin Edit/Remove to the card bottom; removed the quantity +/− bar entirely. (`configurator.html`, `.cart-preview`, `.cart-actions-row`)
+
+- **"Your Designs" right border** ✓ — Root cause: the grid used a gap-trick (`gap:1.5px; background:var(--ink)` on the page, `border:1.5px solid var(--ink)` on the outer container) which only gives tiles visual right/bottom borders via the container's outer border — individual tiles had `border:none`. Fix: switched to individual tile borders — container keeps `border-top` + `border-left` (the two sides no tile can own), every tile (`.designed-card`, `.designs-filler`, `.designs-add-btn`) gets `border-right:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink)`. No double-borders; consistent with `size-chip` approach. (`room-visualizer.html`, `.designs-grid-outer`, `.designs-page`, `.designed-card`, `.designs-filler`, `.designs-add-btn`)
 
 - **"Your Panels" tile click to preview** ✓ — Clicking the image preview area of a saved tile now loads it into the live 3D viewer without removing it from "Your Panels", so designs can be browsed freely. The panel stays in the cart; only the Edit button removes and opens for editing. (`configurator.html`, `updateCart` click handler on `.cart-preview`)
 
