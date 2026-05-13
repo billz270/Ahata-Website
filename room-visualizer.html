@@ -1458,7 +1458,7 @@ function placePanelAt(clientX, clientY){
   let y = clickYft - panelHft/2;
   x = Math.max(0, Math.min(wallWidthFt - panelWft, x));
   y = Math.max(0, Math.min(wallHeightFt - panelHft, y));
-  const placedPanel = {id: Date.now() + Math.random(), wall: state.activeWall, size, w: panelWft, h: panelHft, price, x, y, designedId, image};
+  const placedPanel = {id: Date.now() + Math.random(), wall: state.activeWall, size, w: panelWft, h: panelHft, price, x, y, designedId, image, orientation: state.orientation};
   if(designedSnap) Object.assign(placedPanel, designedSnap);
   state.panels.push(placedPanel);
   if(designedId !== null){
@@ -1483,7 +1483,7 @@ function openDesignPopup(panel){
   const needsOrient = panel.w !== panel.h;
   const orientLabel = needsOrient ? ' · ' + (panel.orientation === 'vertical' ? 'Vertical' : 'Horizontal') : '';
   const title = 'Add Design — ' + sizeLabel + orientLabel;
-  const orientation = panel.orientation || 'horizontal';
+  const orientation = panel.orientation || (panel.h > panel.w ? 'vertical' : 'horizontal');
   const src = `configurator.html?modal=true&size=${panel.size}&orientation=${orientation}&panelId=${panel.id}`;
 
   const overlay = document.createElement('div');
@@ -1696,6 +1696,33 @@ $('clearBtn').addEventListener('click',()=>{
 function saveRoomPlan(){
   try{localStorage.setItem('acousticRoomPlan', JSON.stringify({room:{length:state.roomLength, width:state.roomWidth, height:state.roomHeight}, panels: state.panels}))}catch(err){}
 }
+
+window.addEventListener('message', e => {
+  if(!e.data || e.data.type !== 'design-saved') return;
+  const { panelId, cartItem } = e.data;
+  const panel = state.panels.find(p => String(p.id) === String(panelId));
+  if(panel){
+    Object.assign(panel, {
+      image:              cartItem.image,
+      imagePosition:      cartItem.imagePosition,
+      imageScale:         cartItem.imageScale,
+      imageNaturalWidth:  cartItem.imageNaturalWidth,
+      imageNaturalHeight: cartItem.imageNaturalHeight,
+      flipH:              cartItem.flipH,
+      flipV:              cartItem.flipV,
+      rotate:             cartItem.rotate,
+      woodVarnish:        cartItem.woodVarnish,
+      fabricWrap:         cartItem.fabricWrap,
+      savedPanelWidth:    cartItem.savedPanelWidth,
+      savedPanelHeight:   cartItem.savedPanelHeight,
+      designedId:         cartItem.id
+    });
+  }
+  closeDesignPopup();
+  renderActivePanels();
+  renderDesignedPanels();
+  saveRoomPlan();
+});
 
 $('designBtn').addEventListener('click', saveRoomPlan);
 
