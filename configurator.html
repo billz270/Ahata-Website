@@ -1475,6 +1475,7 @@ function updateCart(){
 
     const item = document.createElement('div');
     item.className = 'cart-item';
+    item.dataset.idx = String(i);
     item.innerHTML = `
       <button class="cart-remove" data-idx="${i}" title="Remove">×</button>
       <div class="cart-preview">
@@ -1522,6 +1523,12 @@ function updateCart(){
       }
       saveCart();
       updateCart();
+    });
+  });
+  cartStrip.querySelectorAll('.cart-preview').forEach(el=>{
+    el.addEventListener('click', ()=>{
+      const idx = parseInt(el.closest('.cart-item').dataset.idx);
+      triggerPanelSwitch(idx);
     });
   });
   $('panelCount').textContent = getTotalPanelCount();
