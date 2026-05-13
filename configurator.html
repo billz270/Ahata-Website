@@ -54,7 +54,7 @@
   .plan-banner button{background:var(--ink);color:var(--paper);border:none;padding:8px 14px;font-family:inherit;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s}
   .plan-banner button:hover{background:var(--paper);color:var(--ink)}
 
-  .size-section{padding:24px 32px;border-bottom:1.5px solid var(--ink)}
+  .size-section{padding:24px 32px;border-bottom:1.5px solid var(--ink);scroll-margin-top:64px}
   .subsection-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;margin-bottom:16px}
   .subsection-label::before{content:'◆';color:var(--accent);margin-right:8px}
 
@@ -639,6 +639,7 @@ let panYaw = -18, panPitch = 6;
 const MAX_YAW = 30, MAX_PITCH = 20;
 const DEPTH = 30;
 let imageMode = false;
+let _skipDesignerScroll = false;
 
 const PRICES = {'1x1':2500,'2x1':3500,'2x2':4500,'4x2':6500,'1x4':5500};
 
@@ -747,6 +748,7 @@ customCard.addEventListener('click',()=>{
 
 function showDesigner(){
   designer.classList.add('active');
+  if(_skipDesignerScroll){ _skipDesignerScroll = false; return; }
   setTimeout(()=>designer.scrollIntoView({behavior:'smooth',block:'start'}),100);
 }
 
@@ -1265,12 +1267,20 @@ $('duplicateBtn').addEventListener('click',()=>{
 
 $('addMoreBtn').addEventListener('click',()=>{
   if(!currentPanel.image){alert('Upload an image first');return}
+  const lastSize = currentPanel.size;
   cart.push(panelToCartItem(currentPanel));
   saveCart();
   resetCurrentPanel();
   updateCart();
   currentPanelNum.textContent = String(getTotalPanelCount() + 1).padStart(2,'0');
-  requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'smooth'}));
+  // Re-select the same size so the designer stays visible, ready for next artwork.
+  // Suppress showDesigner's scroll so we can land on the size section instead.
+  const sameCard = document.querySelector(`.size-card[data-size="${lastSize}"]`);
+  if(sameCard){
+    _skipDesignerScroll = true;
+    sameCard.click();
+    requestAnimationFrame(()=>document.querySelector('.size-section').scrollIntoView({behavior:'smooth',block:'start'}));
+  }
 });
 
 $('doneBtn').addEventListener('click',()=>{
