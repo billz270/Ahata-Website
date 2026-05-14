@@ -129,15 +129,13 @@ The configurator's `renderCartCardPreview` and the visualizer's `computeArtTrans
 _(none)_
 
 ### Medium Priority
-_(none)_
+1. **Room Visualizer Dimensions** - -	Allow the user to enter decimal numbers, upto single decimals.
 
 ### Design/Brand (future)
 1. **Logo refresh** — Waiting for new logo from designer friend. Current horizontal logo will be replaced.
 2. **Three-tone color approach** — New gradient colors to be implemented when finalized. Keep current for now.
 3. **Website layout revisit** — After logo and color finalization.
 
-### Not Yet Tackled
-1. **Panel preview sizes** — 1×1 and 2×1 load relatively small by default. Consider enlarging.
 
 ## Resolved bugs
 
@@ -164,6 +162,8 @@ _(none)_
 - **"Your Panels" tile click to preview** ✓ — Clicking the image preview area of a saved tile now loads it into the live 3D viewer without removing it from "Your Panels", so designs can be browsed freely. The panel stays in the cart; only the Edit button removes and opens for editing. (`configurator.html`, `updateCart` click handler on `.cart-preview`)
 
 - **Horizontal logo sizing and background blending** ✓ — Three compounding issues: (1) CSS `height: 32px` too small; (2) `viewBox="0 0 1874.9 750"` had ~258 units of blank margin top/bottom so the actual content (y≈258–492) rendered at only ~10px; (3) Inkscape baked a `<g fill="#fff">` background rect into the SVG which appeared as a white rectangle in the nav (the `style="fill:#f2f2f9"` override was stripped when inlining). Fix: trimmed viewBox to `"0 258 1874.9 234"` (exact content bounds), set nav `padding: 0 32px`, set `height: 56px`, and removed the background rect group and its clipPath def. Applied to all 5 HTML files and the asset SVG.
+
+- **Panel preview sizes** ✓ — All sizes now use per-size overrides in `updatePanelPreview()` instead of a single sqrt(area) formula. 1×1 and 2×1 share a fixed unit of `0.44 × refMaxLinear` px/ft (2×1 is 2 units on the long axis). 4×2 and 1×4 share `1.127 × refMaxLinear / 4` px/ft so their 4ft long sides render identically regardless of orientation. 2×2 uses the original proportional formula unchanged. The preview container is locked to a fixed height (`max-height:540px`) to prevent it from growing when tall/vertical panels are selected; any slight overflow is clipped cleanly by `overflow:hidden`. (`configurator.html`, `updatePanelPreview`, `.panel-3d-container`)
 
 ---
 

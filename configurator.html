@@ -99,7 +99,7 @@
   .panel-3d-container{
     perspective:1800px;perspective-origin:50% 45%;
     display:flex;justify-content:center;align-items:center;
-    flex:1;width:100%;min-height:540px;
+    flex:1;width:100%;min-height:540px;max-height:540px;
     cursor:grab;position:relative;
     user-select:none;-webkit-user-select:none;
     touch-action:none;overflow:hidden;
@@ -330,7 +330,7 @@
     .plan-banner{padding:10px 20px;font-size:11px;flex-wrap:wrap;gap:10px}
     .size-section{padding:20px}
     .preview-area{padding:16px 20px 20px;min-height:460px}
-    .panel-3d-container{min-height:420px}
+    .panel-3d-container{min-height:420px;max-height:420px}
     .panel-actions{padding:12px 20px;flex-wrap:wrap}
     .panel-actions .action-btn{flex:1 1 calc(50% - 6px);font-size:10px;padding:9px 10px}
     .cart-section{padding:24px 20px}
@@ -771,22 +771,26 @@ function updatePanelPreview(){
   const containerW = panelContainer.offsetWidth || 600;
   const containerH = panelContainer.offsetHeight || 540;
 
-  // Scale factor: what fraction of MAX_PANEL_AREA does this panel have?
-  const panelArea = fw * fh;
-  const areaFraction = panelArea / MAX_PANEL_AREA; // 0..1
-  const linearFraction = Math.sqrt(areaFraction); // 0..1 — linear dims scale with sqrt of area
-
-  // The "max panel" linear reference = (viewport * VIEWPORT_FILL_AT_MAX)
-  // So this panel's reference linear = max * linearFraction
   const refMaxLinear = Math.min(containerW, containerH) * VIEWPORT_FILL_AT_MAX;
-  const refThisLinear = refMaxLinear * linearFraction;
 
-  // Apply aspect ratio on top of linear reference
-  // The "reference" represents longest side of the panel
-  const longSide = Math.max(fw, fh);
-  const pxPerFt = refThisLinear / longSide;
-  const w = fw * pxPerFt;
-  const h = fh * pxPerFt;
+  // Per-size overrides: 1x1/2x1 boosted above proportional; 1x4 fixed; 4x2 slightly boosted
+  let w, h;
+  const size = currentPanel.size;
+  if(size === '1x1' || size === '2x1'){
+    const pxPerFt = refMaxLinear * 0.44;
+    w = fw * pxPerFt; h = fh * pxPerFt;
+  } else if(size === '1x4'){
+    const pxPerFt = refMaxLinear * 1.127 / 4;
+    w = fw * pxPerFt; h = fh * pxPerFt;
+  } else if(size === '4x2'){
+    const pxPerFt = refMaxLinear * 1.127 / 4;
+    w = fw * pxPerFt; h = fh * pxPerFt;
+  } else {
+    const panelArea = fw * fh;
+    const linearFraction = Math.sqrt(panelArea / MAX_PANEL_AREA);
+    const pxPerFt = refMaxLinear * linearFraction / Math.max(fw, fh);
+    w = fw * pxPerFt; h = fh * pxPerFt;
+  }
 
   currentPanel.width = w;
   currentPanel.height = h;
