@@ -260,8 +260,7 @@
   .designed-card.active .designed-card-qty{opacity:0.85}
   .designed-card-finish{display:flex;gap:3px;flex-wrap:wrap;margin-top:2px}
   .designed-card-tag{font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:1px 4px;border:1px solid currentColor;opacity:0.75}
-  .designs-add-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;background:var(--paper);color:var(--ink);text-decoration:none;cursor:pointer;transition:background 0.2s;min-height:60px;font-family:inherit;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);padding:0}
-  .designs-add-btn.full-page{min-height:100px;grid-column:span 2;grid-row:span 2}
+  .designs-add-btn{display:flex;flex-direction:column;background:var(--paper);color:var(--ink);text-decoration:none;cursor:pointer;transition:background 0.2s;font-family:inherit;border-right:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);padding:0}
   .designs-add-btn:hover{background:#EAEAF1}
   .designs-add-icon{font-family:'Archivo Black',sans-serif;font-size:20px;line-height:1}
   .designs-add-label{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;opacity:0.6}
@@ -741,7 +740,7 @@ function renderDesignedPanels(){
     const btn = document.createElement('a');
     btn.href = 'configurator.html';
     btn.className = 'designs-add-btn';
-    btn.innerHTML = `<span class="designs-add-icon">+</span><span class="designs-add-label">Design panel</span>`;
+    btn.innerHTML = `<div class="designed-card-preview"><span class="designs-add-icon">+</span></div><div class="designed-card-info"><span class="designs-add-label">Click to design your first panel</span></div>`;
     return btn;
   }
 
@@ -817,16 +816,12 @@ function renderDesignedPanels(){
     const page = document.createElement('div');
     page.className = 'designs-page';
 
-    // Add btn alone on this page → span full 2×2
-    if(pageEls.length === 1 && pageEls[0] === addBtn){
-      addBtn.classList.add('full-page');
-    } else {
-      // Fill remaining slots with paper-coloured fillers
-      while(pageEls.length < 4){
-        const f = document.createElement('div');
-        f.className = 'designs-filler';
-        pageEls.push(f);
-      }
+    // Fill remaining slots with paper-coloured fillers
+    while(pageEls.length < 4){
+      const f = document.createElement('div');
+      f.className = 'designs-filler';
+      f.innerHTML = `<div class="designed-card-preview"></div><div class="designed-card-info"></div>`;
+      pageEls.push(f);
     }
     pageEls.forEach(el => page.appendChild(el));
     container.appendChild(page);
