@@ -211,6 +211,11 @@
   .eq-dist-arrow.eq-v{width:1.5px}
   .eq-dist-arrow.eq-v::before{content:'';position:absolute;top:0;left:-2px;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-bottom:4px solid var(--primary-light)}
   .eq-dist-arrow.eq-v::after{content:'';position:absolute;bottom:0;left:-2px;border-left:2.5px solid transparent;border-right:2.5px solid transparent;border-top:4px solid var(--primary-light)}
+  /* Wall edge resize handles */
+  .resize-handle{position:absolute;z-index:50;touch-action:none}
+  .resize-handle.h-ns{cursor:ns-resize}
+  .resize-handle.h-ew{cursor:ew-resize}
+  #wallResizeReadout{position:fixed;z-index:9999;background:var(--ink);color:var(--paper);font-family:'Archivo Black',sans-serif;font-size:11px;letter-spacing:-0.01em;padding:3px 8px;pointer-events:none;display:none;white-space:nowrap}
 
   /* SIDEBAR */
   .sidebar{padding:22px 18px;display:flex;flex-direction:column;background:var(--paper);min-width:0}
@@ -555,6 +560,8 @@
   </div>
 </div>
 
+<div id="wallResizeReadout"></div>
+
 <script>
 // CONSULT MODAL
 const consultModal = document.getElementById('consultModal');
@@ -595,6 +602,8 @@ const statCount = $('statCount'), statCoverage = $('statCoverage'), statTotal = 
 const activeWallSurface = $('activeWallSurface');
 const wallThumbs = $('wallThumbs');
 const orientToggle = $('orientToggle');
+const bigWallScene = $('bigWallScene');
+const wallResizeReadout = $('wallResizeReadout');
 
 function loadDesignedCart(){
   try{
@@ -697,6 +706,7 @@ function sizeWallSurface(){
   else { w = availableW; h = w / ratio; }
   activeWallSurface.style.width = w + 'px';
   activeWallSurface.style.height = h + 'px';
+  updateResizeHandles();
 }
 
 document.querySelectorAll('.size-chip').forEach(chip=>{
@@ -1722,6 +1732,121 @@ window.addEventListener('message', e => {
 $('designBtn').addEventListener('click', saveRoomPlan);
 
 window.addEventListener('resize',()=>{setTimeout(()=>{sizeWallSurface();renderActivePanels();renderThumbnails()}, 50)});
+
+// ====================================================
+// HP-1: WALL-EDGE RESIZE HANDLES
+// ====================================================
+let _resizeHandles = null;
+
+function createResizeHandles(){
+  if(_resizeHandles) return;
+  _resizeHandles = {};
+  ['top','bottom','left','right'].forEach(edge=>{
+    const div = document.createElement('div');
+    div.className = 'resize-handle ' + (edge==='top'||edge==='bottom' ? 'h-ns' : 'h-ew');
+    div.dataset.edge = edge;
+    bigWallScene.appendChild(div);
+    _resizeHandles[edge] = div;
+
+    div.addEventListener('pointerenter', e=>{
+      if(interaction && interaction.kind==='wall-resize') return;
+      _showResizeReadout(e.clientX, e.clientY, edge);
+    });
+    div.addEventListener('pointermove', e=>{
+      if(interaction && interaction.kind==='wall-resize') return;
+      _showResizeReadout(e.clientX, e.clientY, edge);
+    });
+    div.addEventListener('pointerleave', ()=>{
+      if(!interaction || interaction.kind!=='wall-resize') _hideResizeReadout();
+    });
+
+    div.addEventListener('pointerdown', e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      const wallRect = activeWallSurface.getBoundingClientRect();
+      const {w:wallW, h:wallH} = getWallDimensionsFt(state.activeWall);
+      const isHeightAxis = (edge==='top' || edge==='bottom');
+      const isLengthWall = (state.activeWall==='front' || state.activeWall==='back');
+      const startDim = isHeightAxis ? state.roomHeight : (isLengthWall ? state.roomLength : state.roomWidth);
+      const inputEl  = isHeightAxis ? heightInput      : (isLengthWall ? lengthInput  : widthInput);
+      interaction = {
+        kind: 'wall-resize', edge,
+        startX: e.clientX, startY: e.clientY,
+        startDim, inputEl, isHeightAxis,
+        startPxPerFtX: wallRect.width  / wallW,
+        startPxPerFtY: wallRect.height / wallH
+      };
+      bigWallScene.setPointerCapture(e.pointerId);
+    });
+  });
+}
+
+function updateResizeHandles(){
+  if(!_resizeHandles) createResizeHandles();
+  const sceneRect = bigWallScene.getBoundingClientRect();
+  const wallRect  = activeWallSurface.getBoundingClientRect();
+  if(sceneRect.width===0 || wallRect.width===0) return;
+  const wL = wallRect.left - sceneRect.left;
+  const wT = wallRect.top  - sceneRect.top;
+  const wW = wallRect.width;
+  const wH = wallRect.height;
+  const z = 6; // half-thickness of each handle strip (px)
+  const pos = (el, l, t, w, h)=>{
+    el.style.left=l+'px'; el.style.top=t+'px'; el.style.width=w+'px'; el.style.height=h+'px';
+  };
+  pos(_resizeHandles.top,    wL,      wT-z,    wW,   z*2);
+  pos(_resizeHandles.bottom, wL,      wT+wH-z, wW,   z*2);
+  pos(_resizeHandles.left,   wL-z,    wT,      z*2,  wH);
+  pos(_resizeHandles.right,  wL+wW-z, wT,      z*2,  wH);
+}
+
+function _showResizeReadout(clientX, clientY, edge){
+  const isHeightAxis = (edge==='top' || edge==='bottom');
+  const isLengthWall = (state.activeWall==='front' || state.activeWall==='back');
+  const dim = isHeightAxis ? state.roomHeight : (isLengthWall ? state.roomLength : state.roomWidth);
+  wallResizeReadout.textContent = dim.toFixed(1)+' ft';
+  wallResizeReadout.style.left = (clientX+14)+'px';
+  wallResizeReadout.style.top  = (clientY-28)+'px';
+  wallResizeReadout.style.display = 'block';
+}
+
+function _hideResizeReadout(){
+  wallResizeReadout.style.display = 'none';
+}
+
+bigWallScene.addEventListener('pointermove', e=>{
+  if(!interaction || interaction.kind!=='wall-resize') return;
+  const {edge, startX, startY, startDim, startPxPerFtX, startPxPerFtY, inputEl, isHeightAxis} = interaction;
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
+  let rawDelta;
+  if(edge==='top')         rawDelta = -dy / startPxPerFtY;
+  else if(edge==='bottom') rawDelta =  dy / startPxPerFtY;
+  else if(edge==='left')   rawDelta = -dx / startPxPerFtX;
+  else                     rawDelta =  dx / startPxPerFtX;
+  const snap   = e.shiftKey ? 0.5 : 0.1;
+  const newDim = Math.round((startDim + rawDelta) / snap) * snap;
+  const minDim = isHeightAxis ? 7 : 6;
+  const maxDim = isHeightAxis ? 14 : 40;
+  const clampedDim = Math.max(minDim, Math.min(maxDim, newDim));
+  inputEl.value = clampedDim.toFixed(1);
+  updateDimensions();
+  updateResizeHandles();
+  _showResizeReadout(e.clientX, e.clientY, edge);
+});
+
+bigWallScene.addEventListener('pointerup', e=>{
+  if(!interaction || interaction.kind!=='wall-resize') return;
+  try{ bigWallScene.releasePointerCapture(e.pointerId); }catch(err){}
+  _hideResizeReadout();
+  interaction = null;
+});
+
+bigWallScene.addEventListener('pointercancel', e=>{
+  if(!interaction || interaction.kind!=='wall-resize') return;
+  _hideResizeReadout();
+  interaction = null;
+});
 
 updateDimensions();
 requestAnimationFrame(()=>{sizeWallSurface();renderActivePanels();renderThumbnails()});
