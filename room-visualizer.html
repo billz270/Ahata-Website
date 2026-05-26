@@ -891,7 +891,22 @@ function loadDesignedCart(){
   renderDesignedPanels();
 }
 
+function loadRoomPlan(){
+  try{
+    const saved = JSON.parse(localStorage.getItem('acousticRoomPlan'));
+    if(!saved) return;
+    if(saved.room){
+      const r = saved.room;
+      if(r.length){ state.roomLength = r.length; lengthInput.value = r.length; }
+      if(r.width) { state.roomWidth  = r.width;  widthInput.value  = r.width;  }
+      if(r.height){ state.roomHeight = r.height; heightInput.value = r.height; }
+    }
+    if(Array.isArray(saved.panels)) state.panels = saved.panels;
+  }catch(e){}
+}
+
 // Run on initial load
+loadRoomPlan();
 loadDesignedCart();
 // Re-run on bfcache restore (browser back/forward) — pageshow fires with persisted=true
 window.addEventListener('pageshow', e => { if(e.persisted) loadDesignedCart(); });
@@ -1017,6 +1032,7 @@ function renderDesignedPanels(){
     btn.href = 'configurator.html';
     btn.className = 'designs-add-btn';
     btn.innerHTML = `<div class="designed-card-preview"><span class="designs-add-icon">+</span></div><div class="designed-card-info"><span class="designs-add-label">Click to design your first panel</span></div>`;
+    btn.addEventListener('click', saveRoomPlan);
     return btn;
   }
 
