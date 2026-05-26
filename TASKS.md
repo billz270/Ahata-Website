@@ -57,3 +57,144 @@ Extend the existing room-resize functionality to support direct manipulation via
 - Snap-to-feet based on smartphone camera measurement (dropped)
 - Wall labels (A/B/C/D section callouts) (parked)
 - Touch/mobile drag support (separate future task)
+
+---
+
+## Task #DEV-2: "Start Over" Button in Configurator
+- **Status:** DONE (committed `57a24b7`)
+- **Priority:** MEDIUM
+- **File:** configurator.html
+
+### Goal
+Add a "Start Over" button in the live preview window that clears the current design and resets the canvas to blank, allowing users to upload a new image without losing their panel size/orientation selection.
+
+### Behavior Spec
+
+**Button placement:**
+- Inside the panel preview area (3D rendered panel). Position: top-right corner of the preview, subtle styling (small icon or text button).
+
+**On click:**
+- Clear the uploaded image from the preview
+- Reset all image transforms (position, scale, rotation, flip) to defaults
+- Keep the panel size and orientation intact
+- Clear the image filename and file size display
+- Reset the "Your Panels" section below to empty state if this was the first design
+
+**Visual feedback:**
+- Button appears on hover over the preview area, or always visible (design choice — keep consistent with existing UI patterns)
+- Clicking triggers a subtle reset animation (fade out image, clear transforms)
+
+### Acceptance Criteria
+✅ "Start Over" button visible in preview area
+✅ Clicking clears image and resets transforms
+✅ Panel size/orientation preserved
+✅ "Your Panels" section reflects empty state if applicable
+✅ User can immediately upload a new image after reset
+
+---
+
+## Task #DEV-3: Contextual Wall Dimension Labels in Room Visualizer
+- **Status:** TODO
+- **Priority:** MEDIUM
+- **File:** room-visualizer.html
+
+### Goal
+Update the "Enter Exact Dimensions" input labels to reflect the active wall's actual dimension, while keeping the underlying room model (length × width × height) unchanged. Users see contextual labels that match the wall they're viewing.
+
+### Behavior Spec
+
+**Label mapping (Option A — contextual per wall):**
+- **Front/Back walls:** Show "Room Length" (14 ft) and "Height" (10 ft)
+- **Left/Right walls:** Show "Room Width" (10 ft) and "Height" (10 ft)
+- The input fields themselves remain unchanged — they still update the underlying room.length/width/height
+- Only the *labels* change based on active wall selection
+
+**When user switches walls:**
+- Active wall indicator updates (existing behavior)
+- Input field labels update to reflect the new wall's relevant dimensions
+- Input values update to show the correct dimension for that wall's axis
+
+**Visual presentation:**
+- Subtle label change (no animation needed)
+- Keep the same input field styling and layout
+
+### Acceptance Criteria
+✅ Front wall selected → labels show "Room Length" and "Height"
+✅ Right wall selected → labels show "Room Width" and "Height"
+✅ Back wall selected → labels show "Room Length" and "Height"
+✅ Left wall selected → labels show "Room Width" and "Height"
+✅ Input values correctly reflect the active wall's dimension
+✅ Underlying room model (length/width/height) remains unchanged
+✅ Existing dimension input behavior (typing, arrow keys, mouse drag) unchanged
+
+---
+
+## Task #DEV-4: Checkout Button in Room Visualizer
+- **Status:** TODO
+- **Priority:** HIGH
+- **File:** room-visualizer.html
+
+### Goal
+Add a "Checkout" button in the room visualizer page that allows users to review their cart and proceed to order. Button should be prominent and accessible.
+
+### Behavior Spec
+
+**Button placement:**
+- Bottom of the right sidebar, below all other controls (panel sizes, Your Designs grid, room stats, etc.)
+- Full width of the sidebar, consistent with existing button styling
+
+**On click:**
+- Open a cart review modal or navigate to a checkout page (pending: decide if modal or page)
+- Display: all designed panels in the cart, quantities, total price, order summary
+- Allow user to modify quantities, remove panels, or return to visualizer
+- (Details of checkout page/modal content: TBD in follow-up task)
+
+**Visual style:**
+- Use accent color (yellow) for fill, navy text, matching existing CTA buttons
+- Hover state: standard button hover
+- Disabled state: if cart is empty, button should be disabled or show "No Panels Selected" state
+
+### Acceptance Criteria
+✅ "Checkout" button visible at bottom of sidebar
+✅ Button is full-width sidebar width
+✅ Clicking opens checkout flow (modal or page — TBD)
+✅ Cart contents are passed correctly to checkout
+✅ Button disabled if no designs in cart
+✅ Style matches existing CTA button patterns (yellow fill, navy text)
+✅ User can return to visualizer from checkout
+
+---
+
+## Task #DEV-5: "Your Designs" Grid Order & Label Updates
+- **Status:** TODO
+- **Priority:** MEDIUM
+- **File:** room-visualizer.html
+
+### Goal
+Fix the grid layout order of "Your Designs" cards and update the placeholder text to reflect whether it's the first or subsequent design.
+
+### Behavior Spec
+
+**Grid fill order (2×2 grid):**
+- Position 1 (top-left): First design
+- Position 2 (bottom-left): Second design
+- Position 3 (top-right): Third design
+- Position 4 (bottom-right): Fourth design
+- Position 5+ (wraps): Fifth and beyond, same top-left → bottom-left → top-right → bottom-right pattern
+
+**Placeholder text & "+" button:**
+- When empty: "Click to Design Your First Panel"
+- After 1+ designs exist: "Click to Design Your Next Panel"
+- The "+" button remains in the next available grid position
+- Clicking the "+" navigates to configurator (or opens modal — per Task DEV-1 spec)
+
+**Visual presentation:**
+- Card order is the only change; styling stays the same
+
+### Acceptance Criteria
+✅ Grid fills in order: top-left → bottom-left → top-right → bottom-right
+✅ Placeholder text reads "Click to Design Your First Panel" when empty
+✅ Placeholder text reads "Click to Design Your Next Panel" when 1+ designs exist
+✅ "+" button appears in correct next grid position
+✅ Works with 5+ designed panels (grid wraps, new row starts)
+✅ Text updates dynamically as designs are added/removed
