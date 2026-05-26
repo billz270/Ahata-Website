@@ -575,7 +575,7 @@
     <div class="cart-actions">
       <button class="action-btn" id="addMoreFromCart">+ Add More Panels</button>
       <a href="room-visualizer.html" class="action-btn dup">◆ Visualize Your Space →</a>
-      <button class="action-btn primary" id="requestQuote">Request Quote →</button>
+      <button class="action-btn primary" data-open-checkout>Checkout →</button>
     </div>
   </div>
 </section>
@@ -1344,10 +1344,6 @@ $('addMoreFromCart').addEventListener('click',()=>{
   window.scrollTo({top:0,behavior:'smooth'});
 });
 
-$('requestQuote').addEventListener('click',()=>{
-  saveCart();
-  alert('Quote request captured! We\'ll contact you within 24 hours.\n\nFor now, reach us at hello@ahata.in');
-});
 
 $('cartResetBtn').addEventListener('click',()=>{
   if(confirm('Clear all cart items and start fresh? This cannot be undone.')){
