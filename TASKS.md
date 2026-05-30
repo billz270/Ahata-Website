@@ -170,3 +170,74 @@ Fix the grid layout order of "Your Designs" cards and update the placeholder tex
 ✅ "+" button appears in correct next grid position
 ✅ Works with 5+ designed panels (grid wraps, new row starts)
 ✅ Text updates dynamically as designs are added/removed
+
+---
+
+## Task #DES-5: Grid Pattern on Designed Panels Notification Band
+- **Status:** DONE
+- **Priority:** LOW
+- **File:** room-visualizer.html
+
+### Goal
+The yellow notification band that appears when a user has designed panels (e.g., "2 designed panels loaded · Dismiss") should incorporate the brand grid pattern subtly, creating a gradient reveal from left to right.
+
+### Behavior Spec
+
+**Layout:**
+- Left side: Plain background with text (panel count message). Fully opaque, clean, readable.
+- Right side: Grid pattern gradually reveals itself moving left-to-right, becoming most visible near the dismiss button.
+- The transition should feel like the pattern is emerging from behind the text — not overlaid on top of it.
+
+**Grid pattern:**
+- Use the Crosses 1 pattern from `/design-references/blue-print-patterns/` (or current locked grid overlay style from design.md).
+- Pattern opacity starts at 0% on the left edge and reaches ~15-20% near the dismiss button.
+- Pattern color: `var(--technical)` or a subtle contrast against the band's background color.
+
+**Constraints:**
+- Text must remain fully legible at all times. Pattern never touches the text area.
+- Dismiss button styling unchanged.
+- Band background color unchanged (currently accent/yellow).
+- Mobile: pattern can be hidden entirely if it compromises legibility.
+
+### Acceptance Criteria
+- [x] Grid pattern visible on the right portion of the notification band
+- [x] Pattern fades in gradually from left (0% opacity) to right (~70% opacity)
+- [x] Text on the left remains fully legible with no pattern interference
+- [x] Dismiss button remains fully functional and visible
+- [x] Pattern uses acoustic panel mosaic SVG tile (navy rectangles, 120×40px repeating)
+- [x] Dismiss button hover updated to accent yellow (paper hover was invisible on paper band)
+
+---
+
+## Task #DES-6: Horizontal Misconceptions Tiles on How It Works Page
+- **Status:** TODO
+- **Priority:** MEDIUM
+- **File:** how-it-works.html (new page, or section within existing page — TBD)
+
+### Goal
+The "Common Misconceptions" section should display misconceptions as horizontally stacked tiles rather than a vertical list. Each tile presents one misconception and its correction in a clean, scannable format.
+
+### Behavior Spec
+
+**Layout:**
+- Horizontal row of tiles, edge-to-edge, divided by 1.5px borders (consistent with existing border language).
+- Each tile contains:
+  - **Misconception** (the wrong assumption) — styled as a struck-through or visually "corrected" statement
+  - **Reality** (the truth) — styled as the primary, confident statement
+- Number of tiles: TBD based on content (likely 3-5 misconceptions).
+
+**Styling:**
+- Tiles should feel like the existing step cards on the homepage (`.step-card` pattern — hover fill, consistent padding, border-right dividers).
+- Tier 1 intensity: no blueprint elements. Clean typography, brand-forward.
+- Desktop: horizontal row. Tablet: 2-column grid. Mobile: single column stack.
+
+**Content (draft — to be finalized):**
+- TBD: misconceptions about acoustic panels (e.g., "foam is enough," "panels kill all sound," "you need to cover every wall," etc.)
+
+### Acceptance Criteria
+- [ ] Misconceptions displayed as horizontal tiles in a single row (desktop)
+- [ ] Each tile has misconception + reality clearly distinguished
+- [ ] Responsive: 2-col on tablet, 1-col on mobile
+- [ ] Styling consistent with existing card/tile patterns
+- [ ] Hover state on tiles (consistent with `.step-card` behavior)
+- [ ] Border language matches existing site (1.5px solid ink)

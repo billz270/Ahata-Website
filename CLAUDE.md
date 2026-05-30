@@ -139,6 +139,8 @@ _(none)_
 
 ## Resolved bugs
 
+- **Notification band panel-mosaic pattern (DES-5)** ✓ — Band background changed from `--accent` (yellow) to `--paper`. A `::before` pseudo-element carries a 120×40px SVG tile (two rows of navy `--ink` rectangles in acoustic panel proportions) repeating horizontally. A `mask-image` gradient keeps the left 35% fully transparent (text area stays clean) and fades the pattern in to `opacity:0.70` at the right edge near the Dismiss button. Dismiss button hover updated from `--paper` (invisible on paper band) to `--accent` yellow. This treatment is saved as the standard pattern for all future website bands. (`room-visualizer.html`, `.cart-banner::before`)
+
 - **"Your Designs" grid order & label** ✓ — Grid now fills column-first (top-left → bottom-left → top-right → bottom-right) by reordering `pageEls` to `[0, 2, 1, 3]` before appending to the CSS row-first grid. Add-button label reads "Click to Design Your First Panel" when cart is empty and switches to "Click to Design Your Next Panel" once any design exists. (`room-visualizer.html`, `renderDesignedPanels`)
 
 - **Checkout flow** ✓ — Two-step checkout modal on both Configurator and Room Visualizer pages. "Checkout →" button in visualizer sidebar replaces "Clear All Panels"; "Checkout →" in configurator replaces "Request Quote →". Step 1: cart review (panel thumbnails, size, varnish, wrap, qty, subtotal from `acousticCart`). Step 2: full order form (name, email, phone, address, pincode, city, notes). Submits to `rohan270@gmail.com` via Formspree (`xbdbzvao`). Success state echoes the customer's email. (`configurator.html`, `room-visualizer.html`)
