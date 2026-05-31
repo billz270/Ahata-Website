@@ -321,3 +321,58 @@ When a user selects a panel size in the configurator (before uploading an image)
 - [ ] Tip card disappears after image upload
 - [ ] Styling matches existing sidebar sections
 - [ ] Does not interfere with upload or preview functionality
+
+---
+
+## Task #DES-9: Hero Slider — Artwork Showcase + Configuration Illustration
+- **Status:** TODO (brainstorm first, then implement)
+- **Priority:** HIGH
+- **File:** index.html
+
+### Goal
+Replace the static right side of the hero section with a two-slide slider that showcases the product and the creative process.
+
+### Concept
+
+**Slide 1 — "The Product"**
+- Visual representation of finished acoustic panels arranged as a set (resembling the room visualizer layout — panels as tiles on a wall).
+- Animation: tiles fall/slide into place, assembling a wall arrangement.
+- Communicates: "This is what you get."
+
+**Slide 2 — "The Process"**
+- The artwork usage illustration: one abstract design shown across three configurations (4×2 single panel → 2×2 split pair → 1×2 triptych).
+- Animation: line-draw illustration style — paths draw themselves on screen.
+- Communicates: "This is how you make it yours."
+
+### Slider Behavior
+- Auto-advances or manual (TBD during brainstorm).
+- Transition style between slides (TBD during brainstorm).
+- Indicator dots or no indicator (TBD during brainstorm).
+- Whether the left-side copy (SOUND AS ART headline + CTAs) changes per slide or stays static (TBD during brainstorm).
+
+### Assets
+- Slide 2 SVG: artwork usage illustration from `/design-references/create-your-own/`
+- Slide 1: TBD — may need a new SVG/illustration or could use a CSS-driven tile arrangement.
+
+### Brainstorm Before Implementing
+This task requires a `/brainstorm` session in Claude Code before any code is written. Key questions to resolve:
+- Exact animation timing and sequencing for both slides
+- Whether the hero copy changes per slide or remains fixed
+- Slider controls: auto-play with pause on hover? Manual arrows? Swipe on mobile?
+- Slide 1 tile arrangement: how many panels, what sizes, what layout
+- Transition between slides: crossfade, horizontal slide, or something else
+- Mobile behavior: do both slides work on small screens or does it simplify
+
+### Constraints
+- Do not change the left-side hero content structure (headline, description, CTAs) without brainstorming first.
+- Existing nav and page flow below the hero remain unchanged.
+- Animations must be performant — no jank, no layout shift.
+- Follow design.md: Tier 1 page, so technical elements stay minimal. The line-draw animation on slide 2 is the exception — it's illustrative, not blueprint UI.
+
+### Acceptance Criteria
+- [ ] Hero right side is a functional slider with two slides
+- [ ] Slide 1 shows panel tiles with assembly animation
+- [ ] Slide 2 shows artwork usage illustration with line-draw animation
+- [ ] Slider transitions are smooth and performant
+- [ ] Works on desktop and mobile
+- [ ] Animation details finalized during brainstorm session

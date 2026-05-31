@@ -131,6 +131,9 @@ _(none)_
 ### Medium Priority
 _(none)_
 
+### Recently resolved
+- **Contextual image tips (DES-8)** ✓ — Dynamic "Image tips" sidebar card in configurator. Appears on size selection, disappears on upload. Orientation-aware (2×1, 4×2, 1×4 each have horizontal + vertical tip sets). Shows aspect-ratio SVG diagram, Works well / Avoid columns, optional bonus tip, and collapsible general guidelines. (`configurator.html`, `SIZE_TIPS`, `showSizeTips`, `hideSizeTips`)
+
 ### Design/Brand (future)
 1. **Logo refresh** — Waiting for new logo from designer friend. Current horizontal logo will be replaced.
 2. **Three-tone color approach** — New gradient colors to be implemented when finalized. Keep current for now.
