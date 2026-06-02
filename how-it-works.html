@@ -155,6 +155,27 @@
     .misconception-tile:nth-child(1),.misconception-tile:nth-child(2){border-bottom:1.5px solid rgba(242,242,249,0.2)}
   }
 
+  /* PROCESS TIMELINE */
+  .process-scroll{overflow:visible}
+  .process-track{display:flex}
+  .process-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:0 8px;opacity:0;transform:translateY(10px);transition:opacity 0.4s ease,transform 0.4s ease}
+  .process-step.drawn{opacity:1;transform:translateY(0)}
+  .step-label{font-family:'Archivo Black',sans-serif;font-size:11px;letter-spacing:0.12em;color:var(--accent);text-transform:uppercase;height:32px;display:flex;align-items:flex-end;padding-bottom:2px}
+  .step-icon{width:80px;height:80px;flex-shrink:0}
+  .step-icon svg{width:80px;height:80px;display:block;stroke:var(--ink)}
+  .step-icon svg *{stroke-dasharray:500;stroke-dashoffset:500;transition:none}
+  .process-step.drawn .step-icon svg *{stroke-dashoffset:0;transition:stroke-dashoffset 0.9s ease-out}
+  .step-name{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink);opacity:0.6;text-align:center;line-height:1.4;max-width:90px;padding-top:10px}
+  .process-dots{display:none;justify-content:center;gap:8px;margin-top:16px}
+  .process-dot{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:0.22;transition:opacity 0.2s,background 0.2s;flex-shrink:0}
+  .process-dot.active{opacity:1;background:var(--accent)}
+  @media(max-width:900px){
+    .process-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;padding-bottom:4px}
+    .process-track{min-width:max-content}
+    .process-step{flex:0 0 min(220px,68vw);scroll-snap-align:center}
+    .process-dots{display:flex}
+  }
+
   /* Site max-width container — content constrained on wide screens */
   html{background:var(--paper)}body{max-width:1320px;margin:0 auto;background:var(--paper)}
 </style>
@@ -179,6 +200,150 @@
   </div>
   <div>
     <p class="hero-desc">Acoustic panels aren't magic — they're physics. Here's what a well-treated room actually does for your sound, and what it doesn't do, so you don't buy the wrong thing.</p>
+  </div>
+</section>
+
+<!-- PROCESS TIMELINE -->
+<section class="process">
+  <div class="section-label">◆ How it's made</div>
+  <h2 class="section-title">Seven steps. <span class="accent">Handbuilt.</span></h2>
+  <div class="process-scroll" id="processScroll">
+    <div class="process-track">
+      <div class="process-step">
+        <div class="step-label">01</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Source Wood">
+            <rect x="14" y="32" width="80" height="14"></rect>
+            <path d="M18 37 Q34 35.5 50 37 T82 37"></path>
+            <path d="M18 41 Q34 42.5 50 41 T82 41"></path>
+            <ellipse cx="80" cy="39" rx="3" ry="2"></ellipse>
+            <rect x="22" y="53" width="80" height="14"></rect>
+            <path d="M26 58 Q42 56.5 58 58 T90 58"></path>
+            <path d="M26 62 Q42 63.5 58 62 T90 62"></path>
+            <ellipse cx="42" cy="60" rx="3" ry="2"></ellipse>
+            <rect x="16" y="74" width="80" height="14"></rect>
+            <path d="M20 79 Q36 77.5 52 79 T84 79"></path>
+            <path d="M20 83 Q36 84.5 52 83 T84 83"></path>
+            <ellipse cx="64" cy="81" rx="3" ry="2"></ellipse>
+          </svg>
+        </div>
+        <div class="step-name">Source Wood</div>
+      </div>
+      <div class="process-step">
+        <div class="step-label">02</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Create Frame">
+            <rect x="18" y="22" width="84" height="76"></rect>
+            <rect x="30" y="34" width="60" height="52"></rect>
+            <line x1="18" y1="22" x2="30" y2="34"></line>
+            <line x1="102" y1="22" x2="90" y2="34"></line>
+            <line x1="102" y1="98" x2="90" y2="86"></line>
+            <line x1="18" y1="98" x2="30" y2="86"></line>
+          </svg>
+        </div>
+        <div class="step-name">Create Frame</div>
+      </div>
+      <div class="process-step">
+        <div class="step-label">03</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Install Rockwool">
+            <rect x="18" y="22" width="84" height="76"></rect>
+            <rect x="30" y="34" width="60" height="52"></rect>
+            <line x1="18" y1="22" x2="30" y2="34"></line>
+            <line x1="102" y1="22" x2="90" y2="34"></line>
+            <line x1="102" y1="98" x2="90" y2="86"></line>
+            <line x1="18" y1="98" x2="30" y2="86"></line>
+            <path d="M33 41 Q45 38 57 41 T87 41"></path>
+            <path d="M33 50 Q45 53 57 50 T87 50"></path>
+            <path d="M33 60 Q45 57 57 60 T87 60"></path>
+            <path d="M33 70 Q45 73 57 70 T87 70"></path>
+            <path d="M33 79 Q45 76 57 79 T87 79"></path>
+          </svg>
+        </div>
+        <div class="step-name">Install Rockwool</div>
+      </div>
+      <div class="process-step">
+        <div class="step-label">04</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Add Fiberglass Backing">
+            <rect x="22" y="40" width="62" height="54"></rect>
+            <path d="M16 40 L22 40 M22 34 L22 40"></path>
+            <path d="M84 40 L90 40 M84 34 L84 40"></path>
+            <path d="M16 94 L22 94 M22 94 L22 100"></path>
+            <path d="M84 94 L90 94 M84 94 L84 100"></path>
+            <rect x="36" y="26" width="62" height="54"></rect>
+            <circle cx="40" cy="30" r="1.5"></circle>
+            <circle cx="94" cy="30" r="1.5"></circle>
+            <circle cx="40" cy="76" r="1.5"></circle>
+            <circle cx="94" cy="76" r="1.5"></circle>
+          </svg>
+        </div>
+        <div class="step-name">Fiberglass Backing</div>
+      </div>
+      <div class="process-step">
+        <div class="step-label">05</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Add Back Support">
+            <rect x="18" y="22" width="84" height="76"></rect>
+            <rect x="18" y="38" width="84" height="10"></rect>
+            <rect x="18" y="72" width="84" height="10"></rect>
+            <circle cx="26" cy="43" r="1.5"></circle>
+            <circle cx="94" cy="43" r="1.5"></circle>
+            <circle cx="26" cy="77" r="1.5"></circle>
+            <circle cx="94" cy="77" r="1.5"></circle>
+            <circle cx="60" cy="43" r="2.5"></circle>
+          </svg>
+        </div>
+        <div class="step-name">Back Support</div>
+      </div>
+      <div class="process-step">
+        <div class="step-label">06</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Apply Acoustic Cloth">
+            <rect x="16" y="16" width="88" height="88"></rect>
+            <line x1="16" y1="26" x2="26" y2="16"></line>
+            <line x1="94" y1="16" x2="104" y2="26"></line>
+            <line x1="16" y1="94" x2="26" y2="104"></line>
+            <line x1="94" y1="104" x2="104" y2="94"></line>
+            <rect x="22" y="22" width="76" height="76"></rect>
+            <circle cx="46" cy="46" r="11"></circle>
+            <path d="M26 76 Q44 68 60 76 T96 76"></path>
+            <path d="M26 88 Q44 82 60 88 T96 88"></path>
+            <circle cx="80" cy="34" r="2"></circle>
+          </svg>
+        </div>
+        <div class="step-name">Acoustic Cloth</div>
+      </div>
+      <div class="process-step">
+        <div class="step-label">07</div>
+        <div class="step-icon">
+          <svg viewBox="0 0 120 120" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Package and Ship">
+            <rect x="16" y="20" width="88" height="80"></rect>
+            <polyline points="20,36 20,24 32,24"></polyline>
+            <polyline points="88,24 100,24 100,36"></polyline>
+            <polyline points="20,84 20,96 32,96"></polyline>
+            <polyline points="88,96 100,96 100,84"></polyline>
+            <line x1="16" y1="60" x2="104" y2="60"></line>
+            <line x1="16" y1="56" x2="20" y2="56"></line>
+            <line x1="100" y1="64" x2="104" y2="64"></line>
+            <rect x="58" y="68" width="32" height="22"></rect>
+            <line x1="62" y1="74" x2="86" y2="74"></line>
+            <line x1="62" y1="79" x2="80" y2="79"></line>
+            <line x1="62" y1="84" x2="84" y2="84"></line>
+          </svg>
+        </div>
+        <div class="step-name">Package &amp; Ship</div>
+      </div>
+    </div>
+  </div>
+  <div class="process-dots" id="processDots">
+    <span class="process-dot active"></span>
+    <span class="process-dot"></span>
+    <span class="process-dot"></span>
+    <span class="process-dot"></span>
+    <span class="process-dot"></span>
+    <span class="process-dot"></span>
+    <span class="process-dot"></span>
   </div>
 </section>
 
@@ -297,6 +462,28 @@ document.getElementById('consultForm').addEventListener('submit', e => {
   const body = `Name: ${fd.get('name')}\nEmail: ${fd.get('email')}\nPhone: ${fd.get('phone')}\nRoom type: ${fd.get('room')}\nPreferred date: ${fd.get('date')||'—'}\n\nNotes:\n${fd.get('notes')||'—'}`;
   window.location.href = `mailto:hello@ahata.in?subject=Consultation Request&body=${encodeURIComponent(body)}`;
 });
+
+// Process timeline animation + mobile dots
+(function(){
+  const section = document.querySelector('.process');
+  if(!section) return;
+  const steps = section.querySelectorAll('.process-step');
+  const obs = new IntersectionObserver(entries=>{
+    if(!entries[0].isIntersecting) return;
+    steps.forEach((s,i)=>setTimeout(()=>s.classList.add('drawn'),i*150));
+    obs.disconnect();
+  },{threshold:0.1});
+  obs.observe(section);
+  const scroll = document.getElementById('processScroll');
+  const dots = document.querySelectorAll('#processDots .process-dot');
+  if(scroll && dots.length){
+    scroll.addEventListener('scroll',()=>{
+      const w = steps[0]?.offsetWidth||220;
+      const active = Math.min(Math.round(scroll.scrollLeft/w),steps.length-1);
+      dots.forEach((d,i)=>d.classList.toggle('active',i===active));
+    },{passive:true});
+  }
+})();
 
 // Reveal on scroll
 const observer = new IntersectionObserver(entries => {

@@ -380,9 +380,9 @@ This task requires a `/brainstorm` session in Claude Code before any code is wri
 ---
 
 ## Task #DES-10: Manufacturing Process Illustration on How It Works Page
-- **Status:** TODO
+- **Status:** DONE (committed `pending`)
 - **Priority:** MEDIUM
-- **File:** how-it-works.html (new page — TBD if standalone or section within existing page)
+- **File:** how-it-works.html
 
 ### Goal
 Add a horizontal timeline section showcasing the 7-step panel manufacturing process using the minimal line art SVG illustrations generated from Claude Design.
@@ -423,14 +423,14 @@ Add a horizontal timeline section showcasing the 7-step panel manufacturing proc
 - Connecting line between steps should feel technical (thin, precise) not decorative.
 
 ### Acceptance Criteria
-- [ ] All 7 steps displayed in a horizontal timeline on desktop
-- [ ] Mobile: horizontal scroll with snap points and dot indicators
-- [ ] Line-draw animation triggers on scroll into viewport
-- [ ] Steps reveal sequentially with stagger delay
-- [ ] Blueprint design elements applied per design.md Tier 2–3 guidelines
-- [ ] SVGs sourced from `/design-references/manufacturing-process/`
-- [ ] Connecting line between steps is visible and consistent
-- [ ] No animation jank or layout shift
+- [x] All 7 steps displayed in a horizontal timeline on desktop
+- [x] Mobile: horizontal scroll with snap points and dot indicators
+- [x] Line-draw animation triggers on scroll into viewport
+- [x] Steps reveal sequentially with stagger delay
+- [x] Blueprint design elements applied per design.md Tier 2–3 guidelines
+- [x] SVGs sourced from `/design-references/manufacturing-process/`
+- [~] Connecting line between steps — removed (looked too random across the section)
+- [x] No animation jank or layout shift
 
 ---
 

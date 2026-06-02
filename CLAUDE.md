@@ -137,6 +137,8 @@ _(none)_
 _(none)_
 
 ### Recently resolved
+- **Manufacturing process timeline (DES-10)** ✓ — 7-step horizontal timeline section on `how-it-works.html`, placed directly below the hero and above the Benefits section. Each step: accent number (01–07), inline SVG illustration (80×80, `stroke:var(--ink)`), uppercase step name. SVGs inlined for CSS animation targeting. Scroll-triggered line-draw animation via `stroke-dasharray/dashoffset` with 150ms stagger per step. Mobile: `overflow-x:auto` + `scroll-snap-type:x mandatory`, 7 dot indicators that update on scroll. CSS cascade note: process mobile overrides must live in a separate `@media` block *after* the base process styles, not inside the shared `@media(max-width:900px)` block. (`how-it-works.html`, `.process`, `.process-track`, `.process-step`, `.step-icon`, `#processScroll`, `#processDots`)
+
 - **Nav logo swap (DES-11)** ✓ — Replaced inline SVG placeholder with two-PNG combo: `1.png` (logo mark, 50px) + `4.png` (wordmark, 64px), side by side with `gap:8px` in `.logo`. Nav height auto-sizes to 64px. Both PNGs have `--paper` background so whitespace is invisible. CSS classes: `.brand-logo-mark` / `.brand-logo-text`. Footer "ACOUSTIC◆" references and page title updates deferred. (`index.html`, `configurator.html`, `room-visualizer.html`, `how-it-works.html`, `about.html`)
 
 - **Contextual image tips (DES-8)** ✓ — Dynamic "Image tips" sidebar card in configurator. Appears on size selection, disappears on upload. Orientation-aware (2×1, 4×2, 1×4 each have horizontal + vertical tip sets). Shows aspect-ratio SVG diagram, Works well / Avoid columns, optional bonus tip, and collapsible general guidelines. (`configurator.html`, `SIZE_TIPS`, `showSizeTips`, `hideSizeTips`)
