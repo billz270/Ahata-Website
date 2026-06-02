@@ -380,7 +380,7 @@ This task requires a `/brainstorm` session in Claude Code before any code is wri
 ---
 
 ## Task #DES-10: Manufacturing Process Illustration on How It Works Page
-- **Status:** DONE (committed `pending`)
+- **Status:** DONE (committed `908fd3b`)
 - **Priority:** MEDIUM
 - **File:** how-it-works.html
 
