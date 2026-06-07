@@ -976,9 +976,10 @@ sizeCards.forEach(card=>{
 
     sceneZoom = 0.82;
     panYaw = -18; panPitch = 6;
-    updatePanelPreview();
     showDesigner();
     panelActions.classList.add('visible');
+    panelContainer.getBoundingClientRect(); // force layout so offsetWidth/offsetHeight are real
+    updatePanelPreview();
     if (!currentPanel.image) showSizeTips(card.dataset.size);
   });
 });
@@ -1063,9 +1064,10 @@ $('pickerCreate').addEventListener('click', () => {
   }
 
   sceneZoom = 0.82; panYaw = -18; panPitch = 6;
-  updatePanelPreview();
   showDesigner();
   panelActions.classList.add('visible');
+  panelContainer.getBoundingClientRect();
+  updatePanelPreview();
   hideSizeTips();
 });
 

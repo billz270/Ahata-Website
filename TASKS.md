@@ -540,6 +540,24 @@ Make the "Custom" size button functional. Users select custom width and height, 
 
 ---
 
+## Task #DEV-13: Fix 4×2 Panel Preview Glitch on First Selection
+- **Status:** DONE (committed pending)
+- **Priority:** HIGH
+- **File:** configurator.html
+
+### Root Cause
+`updatePanelPreview()` was called before `showDesigner()`. While `.designer` is `display:none`, `panelContainer.offsetWidth` returns 0, so the fallback 600×540 is used. For 4×2 horizontal this produces a 572px-wide panel that overflows a ~350px mobile container. Toggling orientation fixed it because by then the designer was visible and real dimensions were available.
+
+### Fix
+Reordered to: `showDesigner()` → `panelActions.classList.add('visible')` → `panelContainer.getBoundingClientRect()` (forces synchronous layout reflow) → `updatePanelPreview()`. Same fix applied to the custom panel creation flow.
+
+### Acceptance Criteria
+✅ 4×2 horizontal renders correctly on first selection
+✅ No need to toggle orientation to fix the preview
+✅ Applies to all sizes, both catalog and custom
+
+---
+
 ## Task #MOB-13: Hamburger Menu for Mobile Navigation (All Pages)
 - **Status:** DONE
 - **Priority:** HIGH
