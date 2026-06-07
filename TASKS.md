@@ -706,7 +706,7 @@ Reduce panel size buttons to smaller dimensions on mobile so all 5 fit in one ho
 ---
 
 ## Task #MOB-19: Fix "Your Designs" Grid Glitch in Visualizer
-- **Status:** TODO
+- **Status:** DONE
 - **Priority:** HIGH
 - **File:** room-visualizer.html
 
