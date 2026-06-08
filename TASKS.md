@@ -731,7 +731,7 @@ Fix the mobile glitch where designed panel cards shrink disproportionately and t
 ---
 
 ## Task #MOB-20: Tighter Step Spacing on How It Works
-- **Status:** TODO
+- **Status:** DONE
 - **Priority:** LOW
 - **File:** how-it-works.html
 
