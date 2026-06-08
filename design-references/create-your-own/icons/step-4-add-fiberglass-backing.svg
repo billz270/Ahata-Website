@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#434c56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Add Fiberglass Backing">
+  
+  <rect x="22" y="40" width="62" height="54"></rect>
+
+  
+  <path d="M16 40 L22 40 M22 34 L22 40"></path>
+  <path d="M84 40 L90 40 M84 34 L84 40"></path>
+  <path d="M16 94 L22 94 M22 94 L22 100"></path>
+  <path d="M84 94 L90 94 M84 94 L84 100"></path>
+
+  
+  <rect x="36" y="26" width="62" height="54"></rect>
+  
+  <circle cx="40" cy="30" r="1.5"></circle>
+  <circle cx="94" cy="30" r="1.5"></circle>
+  <circle cx="40" cy="76" r="1.5"></circle>
+  <circle cx="94" cy="76" r="1.5"></circle>
+</svg>

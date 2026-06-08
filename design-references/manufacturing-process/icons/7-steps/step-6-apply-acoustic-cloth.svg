@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#434c56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Apply Acoustic Cloth with Artwork">
+  
+  <rect x="16" y="16" width="88" height="88"></rect>
+
+  
+  <line x1="16" y1="26" x2="26" y2="16"></line>
+  <line x1="94" y1="16" x2="104" y2="26"></line>
+  <line x1="16" y1="94" x2="26" y2="104"></line>
+  <line x1="94" y1="104" x2="104" y2="94"></line>
+
+  
+  <rect x="22" y="22" width="76" height="76"></rect>
+
+  
+  <circle cx="46" cy="46" r="11"></circle>
+  <path d="M26 76 Q44 68 60 76 T96 76"></path>
+  <path d="M26 88 Q44 82 60 88 T96 88"></path>
+  <circle cx="80" cy="34" r="2"></circle>
+</svg>

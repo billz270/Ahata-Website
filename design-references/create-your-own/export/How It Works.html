@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>How It Works — One Artwork, Three Configurations</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #faf9f5; display: flex; align-items: center; justify-content: center; min-height: 100vh; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+    #__bundler_loading { position: fixed; bottom: 20px; right: 20px; font: 13px/1.4 -apple-system, BlinkMacSystemFont, sans-serif; color: #666; background: #fff; padding: 8px 14px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.12); z-index: 10000; }
+    #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #faf9f5; z-index: 9999; }
+    #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
+    #__bundler_placeholder { color: #999; font-size: 14px; }
+  </style>
+  <noscript>
+    <style>#__bundler_loading { display: none; }</style>
+    <div style="position:fixed;bottom:12px;left:12px;font:13px/1.4 -apple-system,BlinkMacSystemFont,sans-serif;color:#999;background:rgba(255,255,255,0.9);padding:6px 12px;border-radius:6px;box-shadow:0 1px 4px rgba(0,0,0,0.08);z-index:10000;">
+      This page requires JavaScript to display.
+    </div>
+  </noscript>
+</head>
+<body>
+  <div id="__bundler_thumbnail">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="#434c56"></rect>
+      <g fill="none" stroke="#f8f8f8" stroke-width="2" stroke-linecap="round">
+        <rect x="30" y="40" width="40" height="20"></rect>
+        <path d="M34 50 C42 44 58 44 66 50"></path>
+        <circle cx="50" cy="50" r="4"></circle>
+      </g>
+    </svg>
+  </div>
+  <div id="__bundler_loading">Unpacking...</div>
+
+  <script>
+    
+document.addEventListener('DOMContentLoaded', async function() {
+  const loading = document.getElementById('__bundler_loading');
+  function setStatus(msg) { if (loading) loading.textContent = msg; }
+
+  // Error sink persists across replaceWith since it's on window, not the DOM.
+  window.addEventListener('error', function(e) {
+    var p = document.body || document.documentElement;
+    var d = document.getElementById('__bundler_err') || p.appendChild(document.createElement('div'));
+    d.id = '__bundler_err';
+    d.style.cssText = 'position:fixed;bottom:12px;left:12px;right:12px;font:12px/1.4 ui-monospace,monospace;background:#2a1215;color:#ff8a80;padding:10px 14px;border-radius:8px;border:1px solid #5c2b2e;z-index:99999;white-space:pre-wrap;max-height:40vh;overflow:auto';
+    d.textContent = (d.textContent ? d.textContent + String.fromCharCode(10) : '') +
+      '[bundle] ' + (e.message || e.type) +
+      (e.filename ? ' (' + e.filename.slice(0, 60) + ':' + e.lineno + ')' : '');
+  }, true);
+
+  try {
+    const manifestEl = document.querySelector('script[type="__bundler/manifest"]');
+    const templateEl = document.querySelector('script[type="__bundler/template"]');
+    if (!manifestEl || !templateEl) {
+      setStatus('Error: missing bundle data');
+      console.error('[bundler] Missing script tags — manifestEl:', !!manifestEl, 'templateEl:', !!templateEl);
+      return;
+    }
+
+    const manifest = JSON.parse(manifestEl.textContent);
+    let template = JSON.parse(templateEl.textContent);
+
+    const uuids = Object.keys(manifest);
+    setStatus('Unpacking ' + uuids.length + ' assets...');
+
+    const blobUrls = {};
+    await Promise.all(uuids.map(async (uuid) => {
+      const entry = manifest[uuid];
+      try {
+        const binaryStr = atob(entry.data);
+        const bytes = new Uint8Array(binaryStr.length);
+        for (let i = 0; i < binaryStr.length; i++) bytes[i] = binaryStr.charCodeAt(i);
+
+        let finalBytes = bytes;
+        if (entry.compressed) {
+          if (typeof DecompressionStream !== 'undefined') {
+            const ds = new DecompressionStream('gzip');
+            const writer = ds.writable.getWriter();
+            const reader = ds.readable.getReader();
+            writer.write(bytes);
+            writer.close();
+            const chunks = [];
+            let totalLen = 0;
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              totalLen += value.length;
+            }
+            finalBytes = new Uint8Array(totalLen);
+            let offset = 0;
+            for (const chunk of chunks) { finalBytes.set(chunk, offset); offset += chunk.length; }
+          } else {
+            console.warn('DecompressionStream not available, asset ' + uuid + ' may not render');
+          }
+        }
+
+        blobUrls[uuid] = URL.createObjectURL(new Blob([finalBytes], { type: entry.mime }));
+      } catch (err) {
+        console.error('Failed to decode asset ' + uuid + ':', err);
+        blobUrls[uuid] = URL.createObjectURL(new Blob([], { type: entry.mime }));
+      }
+    }));
+
+    const extResEl = document.querySelector('script[type="__bundler/ext_resources"]');
+    const extResources = extResEl ? JSON.parse(extResEl.textContent) : [];
+    const resourceMap = {};
+    for (const entry of extResources) {
+      if (blobUrls[entry.uuid]) resourceMap[entry.id] = blobUrls[entry.uuid];
+    }
+
+    setStatus('Rendering...');
+    for (const uuid of uuids) template = template.split(uuid).join(blobUrls[uuid]);
+
+    // Strip integrity + crossorigin — blob URLs from a file:// document inherit
+    // a null origin, so crossorigin forces a CORS fetch that SRI then rejects.
+    // The manifest bytes are ours; SRI protects against CDN compromise, not this.
+    template = template.replace(/\s+integrity="[^"]*"/gi, '').replace(/\s+crossorigin="[^"]*"/gi, '');
+
+    const resourceScript = '<script>window.__resources = ' +
+      JSON.stringify(resourceMap).split('</' + 'script>').join('<\\/' + 'script>') +
+      ';</' + 'script>';
+    // Inject after <head> so the DOCTYPE stays first; prepending the script
+    // would push the parser into quirks mode. DOMParser always emits a <head>
+    // (synthesizing one if the source HTML omitted it) but may carry
+    // attributes through, so match the full opening tag. slice() rather than
+    // replace() keeps us clear of $-pattern substitution in resourceScript.
+    const headOpen = template.match(/<head[^>]*>/i);
+    if (headOpen) {
+      const i = headOpen.index + headOpen[0].length;
+      template = template.slice(0, i) + resourceScript + template.slice(i);
+    }
+
+    // Parse the template and swap the root element. Scripts inserted via
+    // DOMParser/replaceWith are inert per spec — re-create each with
+    // createElement so they execute, awaiting onload for src scripts to
+    // preserve ordering (React before ReactDOM before Babel before text/babel).
+    const doc = new DOMParser().parseFromString(template, 'text/html');
+    document.documentElement.replaceWith(doc.documentElement);
+    const dead = Array.from(document.scripts);
+    for (const old of dead) {
+      const s = document.createElement('script');
+      for (const a of old.attributes) s.setAttribute(a.name, a.value);
+      s.textContent = old.textContent;
+      // text/babel scripts with a src: fetch and inline. transformScriptTags
+      // does XHR against the src, but blob:null/ from a file:// origin is
+      // silently dropped. Inlining makes it a plain inline babel script,
+      // which transformScriptTags handles unconditionally.
+      if ((s.type === 'text/babel' || s.type === 'text/jsx') && s.src) {
+        const r = await fetch(s.src);
+        s.textContent = await r.text();
+        s.removeAttribute('src');
+      }
+      const p = s.src ? new Promise(function(r) { s.onload = s.onerror = r; }) : null;
+      old.replaceWith(s);
+      if (p) await p;
+    }
+    // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
+    // which fired before we swapped the document. Trigger manually if present.
+    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+      window.Babel.transformScriptTags();
+    }
+  } catch (err) {
+    setStatus('Error unpacking: ' + err.message);
+    console.error('Bundle unpack error:', err);
+  }
+});
+
+  </script>
+
+  <script type="__bundler/manifest">
+{"9cf1dc43-1f1d-4e16-b616-6857bb51f8fc":{"mime":"image/svg+xml","compressed":true,"data":"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"}}
+  </script>
+
+  <script type="__bundler/ext_resources">
+[]
+  </script>
+
+  <script type="__bundler/template">
+"<!DOCTYPE html>\n<html lang=\"en\"><head>\n<meta charset=\"utf-8\">\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n<title>How It Works — One Artwork, Three Configurations<\u002Ftitle>\n<style>\n  *{box-sizing:border-box;margin:0;padding:0}\n  html,body{background:#f8f8f8;color:#434c56;font-family:'Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}\n  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 32px}\n  .frame{width:100%;max-width:1180px}\n  .frame img{width:100%;height:auto;display:block}\n<\u002Fstyle>\n<\u002Fhead>\n<body>\n  \n  <div class=\"frame\"><img src=\"9cf1dc43-1f1d-4e16-b616-6857bb51f8fc\" alt=\"One artwork, imagined to your configuration: single panel, split pair, and triptych\"><\u002Fdiv>\n\n\n<\u002Fbody><\u002Fhtml>"
+  </script>
+</body>
+</html>

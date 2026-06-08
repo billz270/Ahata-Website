@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#434c56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Source Wood">
+  
+  <rect x="14" y="32" width="80" height="14"></rect>
+  <path d="M18 37 Q34 35.5 50 37 T82 37"></path>
+  <path d="M18 41 Q34 42.5 50 41 T82 41"></path>
+  <ellipse cx="80" cy="39" rx="3" ry="2"></ellipse>
+
+  
+  <rect x="22" y="53" width="80" height="14"></rect>
+  <path d="M26 58 Q42 56.5 58 58 T90 58"></path>
+  <path d="M26 62 Q42 63.5 58 62 T90 62"></path>
+  <ellipse cx="42" cy="60" rx="3" ry="2"></ellipse>
+
+  
+  <rect x="16" y="74" width="80" height="14"></rect>
+  <path d="M20 79 Q36 77.5 52 79 T84 79"></path>
+  <path d="M20 83 Q36 84.5 52 83 T84 83"></path>
+  <ellipse cx="64" cy="81" rx="3" ry="2"></ellipse>
+</svg>

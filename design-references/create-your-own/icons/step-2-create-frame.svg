@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#434c56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Create Frame">
+  
+  <rect x="18" y="22" width="84" height="76"></rect>
+  
+  <rect x="30" y="34" width="60" height="52"></rect>
+  
+  <line x1="18" y1="22" x2="30" y2="34"></line>
+  <line x1="102" y1="22" x2="90" y2="34"></line>
+  <line x1="102" y1="98" x2="90" y2="86"></line>
+  <line x1="18" y1="98" x2="30" y2="86"></line>
+</svg>

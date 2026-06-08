@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#434c56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Add Back Support">
+  
+  <rect x="18" y="22" width="84" height="76"></rect>
+
+  
+  <rect x="18" y="38" width="84" height="10"></rect>
+  <rect x="18" y="72" width="84" height="10"></rect>
+
+  
+  <circle cx="26" cy="43" r="1.5"></circle>
+  <circle cx="94" cy="43" r="1.5"></circle>
+  <circle cx="26" cy="77" r="1.5"></circle>
+  <circle cx="94" cy="77" r="1.5"></circle>
+
+  
+  <circle cx="60" cy="43" r="2.5"></circle>
+</svg>

@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Ahata · Icon Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1c1c1d;
+    --steel: #434c56;
+    --paper: #f8f8f8;
+    --line: rgba(28,28,29,0.10);
+    --line-strong: rgba(28,28,29,0.20);
+    --muted: rgba(28,28,29,0.55);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--paper);color:var(--ink);
+    font-family:'Archivo',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body{max-width:1480px;margin:0 auto;padding-bottom:80px}
+
+  /* ── Header ─────────────────────────────────────────────────────────── */
+  .hdr{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:24px 40px 18px;border-bottom:1px solid var(--line);
+  }
+  .hdr-left{display:flex;align-items:center;gap:14px}
+  .hdr-mark{width:40px;height:40px;border:1px solid var(--line-strong);
+    display:grid;place-items:center;border-radius:2px}
+  .hdr-mark svg{display:block}
+  .hdr-title{font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:-0.01em;text-transform:uppercase}
+  .hdr-sub{font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:0.08em;text-transform:uppercase}
+  .hdr-right{display:flex;align-items:center;gap:10px}
+  .legend{font:500 11px/1 'JetBrains Mono',ui-monospace,monospace;color:var(--muted);letter-spacing:0.02em}
+
+  /* ── Tier explainer ────────────────────────────────────────────────── */
+  .intro{padding:28px 40px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1fr;gap:24px;align-items:start}
+  .intro-block h2{font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:8px}
+  .intro-block p{font-size:12px;line-height:1.55;color:var(--muted)}
+  .intro-block .v-name{display:inline-block;font:600 10px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:0.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:4px 7px;border-radius:2px;margin-right:8px;vertical-align:middle}
+
+  /* ── Sticky size toolbar ───────────────────────────────────────────── */
+  .toolbar{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--line);
+    padding:14px 40px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .size-control{display:flex;align-items:center;gap:12px}
+  .size-label{font:500 11px/1 'JetBrains Mono',ui-monospace,monospace;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
+  .size-buttons{display:flex;border:1px solid var(--line-strong);border-radius:2px;overflow:hidden}
+  .size-buttons button{
+    font:500 11px/1 'JetBrains Mono',ui-monospace,monospace;
+    background:transparent;color:var(--ink);border:none;cursor:pointer;
+    padding:7px 11px;border-right:1px solid var(--line);transition:background .12s;
+  }
+  .size-buttons button:last-child{border-right:none}
+  .size-buttons button:hover{background:color-mix(in oklab,var(--paper) 80%, var(--ink) 20%)}
+  .size-buttons button.active{background:var(--ink);color:var(--paper)}
+  .bg-toggle{display:flex;gap:6px;align-items:center}
+  .bg-toggle button{
+    width:24px;height:24px;border:1px solid var(--line-strong);border-radius:2px;
+    cursor:pointer;padding:0;
+  }
+  .bg-toggle button.active{outline:2px solid var(--ink);outline-offset:2px}
+  .bg-toggle .bg-paper{background:#f8f8f8}
+  .bg-toggle .bg-white{background:#ffffff}
+  .bg-toggle .bg-dark{background:#1c1c1d}
+  .bg-toggle .bg-steel{background:#434c56}
+  .download-all{
+    display:flex;gap:8px;
+  }
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;
+    font:500 11px/1 'Archivo',sans-serif;letter-spacing:0.06em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);border:1px solid var(--ink);border-radius:2px;
+    padding:8px 12px;cursor:pointer;transition:background .12s;
+  }
+  .btn:hover{background:#000}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:var(--paper)}
+
+  /* ── Variation columns layout ──────────────────────────────────────── */
+  .grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+    border-bottom:1px solid var(--line);
+  }
+  .col{border-right:1px solid var(--line)}
+  .col:last-child{border-right:none}
+  .col-head{
+    position:sticky;top:53px;z-index:5;
+    padding:18px 22px 14px;background:var(--paper);
+    border-bottom:1px solid var(--line);
+  }
+  .col-tag{display:inline-block;font:600 10px/1 'JetBrains Mono',ui-monospace,monospace;
+    letter-spacing:0.1em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);padding:4px 7px;border-radius:2px;margin-bottom:8px}
+  .col-name{font-family:'Archivo Black',sans-serif;font-size:16px;letter-spacing:-0.01em;text-transform:uppercase}
+  .col-sub{font-size:11px;color:var(--muted);margin-top:4px;letter-spacing:0.02em}
+  .col-actions{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+  .col-actions .btn{font-size:10px;padding:6px 9px}
+
+  /* ── Category sections ─────────────────────────────────────────────── */
+  .cat-header{
+    grid-column:1/-1;
+    padding:22px 40px 10px;
+    background:var(--paper);
+    border-top:1px solid var(--line);
+    display:flex;align-items:baseline;gap:14px;
+  }
+  .cat-num{font:600 11px/1 'JetBrains Mono',ui-monospace,monospace;color:var(--muted);letter-spacing:0.1em}
+  .cat-name{font-family:'Archivo Black',sans-serif;font-size:14px;letter-spacing:-0.01em;text-transform:uppercase}
+  .cat-count{font:500 11px/1 'JetBrains Mono',ui-monospace,monospace;color:var(--muted);letter-spacing:0.02em}
+
+  /* ── Per-icon cell ─────────────────────────────────────────────────── */
+  .cell{
+    padding:16px 18px;
+    border-top:1px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    position:relative;
+    transition:background .12s;
+  }
+  .cell:hover{background:color-mix(in oklab,var(--paper) 92%, var(--ink) 8%)}
+  .cell:hover .cell-dl{opacity:1}
+  .icon-wrap{
+    --icon-size: 48px;
+    --icon-bg: var(--paper);
+    width:104px;height:104px;
+    display:grid;place-items:center;
+    background:var(--icon-bg);
+    border:1px dashed var(--line-strong);border-radius:3px;
+    transition:background .15s;
+  }
+  .icon-wrap svg{width:var(--icon-size);height:var(--icon-size);display:block}
+  .cell.dark .icon-wrap{--icon-bg:#1c1c1d}
+  .cell.steel .icon-wrap{--icon-bg:#434c56}
+  .cell.white .icon-wrap{--icon-bg:#ffffff}
+  .cell-label{font:500 11px/1.2 'Archivo',sans-serif;color:var(--ink);text-align:center;letter-spacing:0.01em}
+  .cell-key{font:500 10px/1 'JetBrains Mono',ui-monospace,monospace;color:var(--muted);letter-spacing:0.02em}
+  .cell-dl{
+    position:absolute;top:8px;right:8px;
+    opacity:0;transition:opacity .12s;
+    background:var(--ink);color:var(--paper);
+    border:none;padding:4px 7px;border-radius:2px;cursor:pointer;
+    font:500 9px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:0.08em;
+  }
+  .cell-dl:hover{background:#000}
+
+  /* When inverted background: invert icon colors */
+  .cell.dark svg [stroke]{stroke:#f8f8f8 !important}
+  .cell.dark svg [fill]:not([fill="none"]){fill:#f8f8f8 !important}
+  .cell.steel svg [stroke]:not([stroke="#434c56"]){stroke:#f8f8f8 !important}
+  .cell.steel svg [fill]:not([fill="none"]):not([fill="#434c56"]){fill:#f8f8f8 !important}
+
+  /* ── Site preview section ──────────────────────────────────────────── */
+  .preview-section{
+    padding:40px;border-top:1px solid var(--line);
+  }
+  .preview-section h2{font-family:'Archivo Black',sans-serif;font-size:18px;letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:6px}
+  .preview-sub{font-size:12px;color:var(--muted);margin-bottom:24px;letter-spacing:0.02em}
+  .preview-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .preview-card{border:1px solid var(--line-strong);padding:18px;border-radius:2px;background:var(--paper)}
+  .preview-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .preview-card-head .tag{font:600 10px/1 'JetBrains Mono',ui-monospace,monospace;letter-spacing:0.1em;text-transform:uppercase;background:var(--ink);color:var(--paper);padding:3px 6px;border-radius:2px}
+  /* Demo step card matching the index.html .step-card layout */
+  .demo-step{display:flex;flex-direction:column;gap:10px;padding:14px;border:1.5px solid var(--ink);min-height:100px;background:var(--paper)}
+  .demo-step-top{display:flex;justify-content:space-between;align-items:center}
+  .demo-step-num{font-family:'Archivo Black',sans-serif;font-size:18px;line-height:1;color:var(--steel)}
+  .demo-step-icon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--ink)}
+  .demo-step-icon svg{width:18px;height:18px}
+  .demo-step h4{font-family:'Archivo Black',sans-serif;font-size:11px;letter-spacing:-0.01em;text-transform:uppercase;line-height:1.1;margin-bottom:3px}
+  .demo-step p{font-size:10px;line-height:1.4;color:var(--muted)}
+
+  /* Footer */
+  .footer-note{
+    padding:32px 40px;text-align:center;color:var(--muted);font-size:11px;
+    border-top:1px solid var(--line);
+    letter-spacing:0.04em;
+  }
+  .footer-note code{font:500 11px 'JetBrains Mono',ui-monospace,monospace;color:var(--ink)}
+
+  @media (max-width:1100px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .col-head{top:53px}
+    .preview-grid{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-mark" id="hdrMark"></div>
+    <div>
+      <div class="hdr-title">Ahata · Icon Library</div>
+      <div class="hdr-sub">27 icons · 4 variations · v01</div>
+    </div>
+  </div>
+  <div class="hdr-right">
+    <span class="legend">colors #1c1c1d · #434c56 · #f8f8f8 — grid 24×24</span>
+  </div>
+</header>
+
+<section class="intro">
+  <div class="intro-block">
+    <h2>Pick a variation</h2>
+    <p>Same 27-icon vocabulary in four execution styles. Compare across columns at multiple sizes, then download the variation you want.</p>
+  </div>
+  <div class="intro-block">
+    <h2><span class="v-name">V1</span>Outline Precise</h2>
+    <p>1.8px stroke, round caps, gentle 2u corners. Content-tier baseline — quiet and warm.</p>
+  </div>
+  <div class="intro-block">
+    <h2><span class="v-name">V2</span>Blueprint</h2>
+    <p>1.4px main + 0.8px dashed details in steel, square caps, corner ticks. Technical-tier feel.</p>
+  </div>
+  <div class="intro-block">
+    <h2><span class="v-name">V3</span>Hairline</h2>
+    <p>1px uniform, recedes into the layout. Best at small inline sizes.</p>
+  </div>
+  <div class="intro-block">
+    <h2><span class="v-name">V4</span>Bracketed</h2>
+    <p>2px stroke + steel corner brackets. References the bracket motif from design.md.</p>
+  </div>
+</section>
+
+<div class="toolbar">
+  <div class="size-control">
+    <span class="size-label">Render @</span>
+    <div class="size-buttons" id="sizeButtons">
+      <button data-size="16">16</button>
+      <button data-size="24">24</button>
+      <button data-size="32">32</button>
+      <button data-size="48" class="active">48</button>
+      <button data-size="72">72</button>
+    </div>
+    <span class="size-label" style="margin-left:18px">On</span>
+    <div class="bg-toggle" id="bgToggle">
+      <button class="bg-paper active" data-bg="paper" title="Paper #f8f8f8"></button>
+      <button class="bg-white" data-bg="white" title="White #ffffff"></button>
+      <button class="bg-dark" data-bg="dark" title="Black #1c1c1d"></button>
+      <button class="bg-steel" data-bg="steel" title="Steel #434c56"></button>
+    </div>
+  </div>
+  <div class="download-all">
+    <button class="btn ghost" data-download-all="v1">Download V1 (.zip)</button>
+    <button class="btn ghost" data-download-all="v2">V2</button>
+    <button class="btn ghost" data-download-all="v3">V3</button>
+    <button class="btn ghost" data-download-all="v4">V4</button>
+  </div>
+</div>
+
+<main id="grid" class="grid"><!-- populated by JS --></main>
+
+<section class="preview-section">
+  <h2>Drop-in preview · Step cards</h2>
+  <p class="preview-sub">How each variation looks in the homepage <code>.step-card</code> slots at 18px (4 step icons: visualize, design, how-it-works, about).</p>
+  <div class="preview-grid" id="preview"></div>
+</section>
+
+<p class="footer-note">
+  Individual SVGs are exported to <code>design-references/icons/v1…v4/&lt;name&gt;.svg</code>.<br>
+  Use <code>fill="currentColor"</code> swap if you want strokes/fills to inherit the parent's <code>color</code>.
+</p>
+
+<script src="icon-defs.js"></script>
+<script>
+(() => {
+  // ── State ────────────────────────────────────────────────────────────
+  let SIZE = 48;
+  let BG = "paper";
+
+  // ── Render header mark ───────────────────────────────────────────────
+  document.getElementById("hdrMark").innerHTML = renderIcon("mark", "v1", { size: 22 });
+
+  // ── Build grid ───────────────────────────────────────────────────────
+  const grid = document.getElementById("grid");
+  const variations = ["v1", "v2", "v3", "v4"];
+
+  function buildGrid() {
+    grid.innerHTML = "";
+
+    // Column headers
+    variations.forEach(v => {
+      const variation = VARIATIONS[v];
+      const head = document.createElement("div");
+      head.className = "col-head";
+      head.innerHTML = `
+        <span class="col-tag">${v.toUpperCase()}</span>
+        <div class="col-name">${variation.name}</div>
+        <div class="col-sub">${variation.sub}</div>
+      `;
+      grid.appendChild(head);
+    });
+
+    // Group icons by category
+    const byCat = {};
+    Object.keys(ICONS).forEach(key => {
+      const cat = ICONS[key].category;
+      (byCat[cat] = byCat[cat] || []).push(key);
+    });
+
+    CATEGORIES.forEach((cat, ci) => {
+      if (!byCat[cat]) return;
+      const keys = byCat[cat];
+
+      // Category header (spans all columns)
+      const ch = document.createElement("div");
+      ch.className = "cat-header";
+      ch.innerHTML = `
+        <span class="cat-num">${String(ci + 1).padStart(2,"0")}</span>
+        <span class="cat-name">${cat}</span>
+        <span class="cat-count">${keys.length} icon${keys.length === 1 ? "" : "s"}</span>
+      `;
+      grid.appendChild(ch);
+
+      // Each row: same icon across 4 variations
+      keys.forEach(key => {
+        variations.forEach(v => {
+          const cell = document.createElement("div");
+          cell.className = `cell ${BG === "paper" ? "" : BG}`;
+          cell.innerHTML = `
+            <button class="cell-dl" data-dl="${v}/${key}">SVG</button>
+            <div class="icon-wrap" style="--icon-size:${SIZE}px">${renderIcon(key, v)}</div>
+            <div class="cell-label">${ICONS[key].label}</div>
+            <div class="cell-key">${key}</div>
+          `;
+          grid.appendChild(cell);
+        });
+      });
+    });
+  }
+
+  // ── Build step-card preview ──────────────────────────────────────────
+  function buildPreview() {
+    const previewEl = document.getElementById("preview");
+    previewEl.innerHTML = "";
+    const stepIcons = [
+      { n: "01", key: "visualize",   title: "Visualize Space", desc: "Map your room." },
+      { n: "02", key: "design",       title: "Design Panels",    desc: "Upload your art." },
+      { n: "03", key: "how-it-works", title: "How It Works",     desc: "What panels do." },
+      { n: "04", key: "about",        title: "About Us",         desc: "Hand built. Mumbai." },
+    ];
+    variations.forEach(v => {
+      const variation = VARIATIONS[v];
+      const card = document.createElement("div");
+      card.className = "preview-card";
+      card.innerHTML = `
+        <div class="preview-card-head">
+          <span class="tag">${v.toUpperCase()}</span>
+          <span class="size-label">${variation.name}</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+          ${stepIcons.map(s => `
+            <div class="demo-step">
+              <div class="demo-step-top">
+                <div class="demo-step-num">${s.n}</div>
+                <div class="demo-step-icon">${renderIcon(s.key, v, { size: 18 })}</div>
+              </div>
+              <div>
+                <h4>${s.title}</h4>
+                <p>${s.desc}</p>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      `;
+      previewEl.appendChild(card);
+    });
+  }
+
+  // ── Wire toolbar ─────────────────────────────────────────────────────
+  document.getElementById("sizeButtons").addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    SIZE = parseInt(btn.dataset.size, 10);
+    document.querySelectorAll("#sizeButtons button").forEach(b => b.classList.toggle("active", b === btn));
+    document.querySelectorAll(".icon-wrap").forEach(w => w.style.setProperty("--icon-size", SIZE + "px"));
+  });
+
+  document.getElementById("bgToggle").addEventListener("click", e => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    BG = btn.dataset.bg;
+    document.querySelectorAll("#bgToggle button").forEach(b => b.classList.toggle("active", b === btn));
+    document.querySelectorAll(".cell").forEach(c => {
+      c.classList.remove("dark", "steel", "white");
+      if (BG !== "paper") c.classList.add(BG);
+    });
+  });
+
+  // ── Per-icon SVG download ────────────────────────────────────────────
+  grid.addEventListener("click", e => {
+    const btn = e.target.closest("[data-dl]");
+    if (!btn) return;
+    const [variation, key] = btn.dataset.dl.split("/");
+    const svg = renderIcon(key, variation, { standalone: true });
+    const blob = new Blob([svg], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `ahata-${variation}-${key}.svg`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
+
+  // ── Download-all (zip) ───────────────────────────────────────────────
+  // No external zip lib; instead we trigger sequential downloads as a fallback
+  // and tell the user. For a true zip we'd add JSZip.
+  document.querySelectorAll("[data-download-all]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const v = btn.dataset.downloadAll;
+      const keys = Object.keys(ICONS);
+      if (!confirm(`This will download ${keys.length} individual SVG files for ${v.toUpperCase()}. Continue?`)) return;
+      let i = 0;
+      const tick = () => {
+        if (i >= keys.length) return;
+        const key = keys[i++];
+        const svg = renderIcon(key, v, { standalone: true });
+        const blob = new Blob([svg], { type: "image/svg+xml" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `ahata-${v}-${key}.svg`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1500);
+        setTimeout(tick, 120);
+      };
+      tick();
+    });
+  });
+
+  buildGrid();
+  buildPreview();
+})();
+</script>
+</body>
+</html>
