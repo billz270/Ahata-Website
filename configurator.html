@@ -14,7 +14,7 @@
     --paper:#f2f2f9;
     --primary:#093d53;
     --primary-light:#007da6;
-    --accent:#ecad49;
+    --accent:#e26167;
     --line:rgba(9,61,83,0.18);
     --mute:rgba(9,61,83,0.62);
     --wood:#7A5F3A;
@@ -285,7 +285,7 @@
   .action-btn.primary{background:var(--accent);color:var(--ink);border-color:var(--accent)}
   .action-btn.primary:hover{background:var(--ink);border-color:var(--ink)}
   .action-btn.dup{background:var(--ink);color:var(--paper)}
-  .action-btn.dup:hover{background:var(--accent);border-color:var(--accent)}
+  .action-btn.dup:hover{background:linear-gradient(135deg,var(--primary),var(--primary-light));border-color:var(--primary)}
 
   .cart-section{display:none;padding:32px;border-bottom:1.5px solid var(--ink)}
   .cart-section.visible{display:block}
@@ -443,7 +443,7 @@
   .checkout-btn.primary{background:var(--accent);color:var(--ink);border-color:var(--accent)}
   .checkout-btn.primary:hover{background:var(--ink);border-color:var(--ink);color:var(--paper)}
   .checkout-btn:disabled{opacity:0.4;cursor:not-allowed}
-  .checkout-btn:disabled:hover{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+  .checkout-btn:disabled:hover{background:var(--accent);color:var(--paper);border-color:var(--accent)}
   .checkout-field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
   .checkout-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em}
   .checkout-field input,.checkout-field textarea{font-family:inherit;font-size:12px;padding:10px 12px;border:1.5px solid var(--ink);background:var(--paper);color:var(--ink);width:100%;box-sizing:border-box;outline:none}

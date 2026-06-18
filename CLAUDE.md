@@ -45,8 +45,8 @@ The nav logo is composed of two `<img>` tags inside `.logo`: `Audial Logo.png` (
 --shadow:#00171f       /* near-black — drop shadow tints, modal backdrops only */
 --paper:#f2f2f9        /* off-white background */
 --primary:#093d53      /* same as ink (kept for semantic clarity) */
---primary-light:#007da6 /* light blue — link hovers, alignment guide lines */
---accent:#ecad49       /* warm yellow — CTA fills, brand dot ◆, accent words */
+--primary-light:#007da6 /* teal blue — gradient companion to primary on hover states */
+--accent:#e26167       /* peach-red — CTA fills, brand dot ◆, accent words */
 --wood:#7A5F3A         /* lightest wood tone */
 --wood-mid:#4A3622     /* mid wood */
 --wood-dark:#2A1C10    /* dark wood */
@@ -56,8 +56,9 @@ The nav logo is composed of two `<img>` tags inside `.logo`: `Audial Logo.png` (
 
 **Usage rules:**
 - Selection states (selected panel, active button) → `--ink` (navy)
-- Highlights (alignment guides, link hovers) → `--primary-light` (light blue)
-- CTA buttons and accent words → `--accent` (yellow), used sparingly
+- Button/tile hover backgrounds → `linear-gradient(135deg, var(--primary), var(--primary-light))` with `color:var(--paper)`
+- CTA buttons and accent words → `--accent` (peach-red), used sparingly
+- Text hover highlights (nav links, footer links, labels) → `--accent` (peach-red)
 - Wood gradient is dark-heavy (mid stop at 60%, not 50%)
 
 ---

@@ -14,7 +14,7 @@
     --paper:#f2f2f9;
     --primary:#093d53;
     --primary-light:#007da6;
-    --accent:#ecad49;
+    --accent:#e26167;
     --line:rgba(9,61,83,0.18);
     --mute:rgba(9,61,83,0.62);
     --wood:#7A5F3A;
@@ -52,7 +52,7 @@
   .hero-label::before{content:'';width:40px;height:2px;background:var(--accent)}
   h1{font-family:'Archivo Black',sans-serif;font-size:clamp(56px,9vw,140px);line-height:0.85;letter-spacing:-0.04em;margin-bottom:24px;text-transform:uppercase}
   h1 .word-sound{color:var(--primary)}
-  h1 .word-as{color:var(--primary-light)}
+  h1 .word-as{color:var(--primary)}
   h1 .word-art{color:var(--accent)}
   .hero-desc{font-size:16px;line-height:1.55;max-width:480px;margin-bottom:24px;color:var(--ink)}
   .hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:28px}
@@ -62,8 +62,8 @@
   .cta{padding:16px 24px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;text-decoration:none;color:var(--ink);background:var(--paper);transition:all 0.2s;border-right:1.5px solid var(--ink);flex:1;text-align:center;font-family:inherit;border-top:none;border-bottom:none;border-left:none;cursor:pointer}
   .cta:last-child{border-right:none}
   .cta.primary{background:var(--ink);color:var(--paper)}
-  .cta:hover{background:var(--accent);color:var(--ink)}
-  .cta.primary:hover{background:var(--accent)}
+  .cta:hover{background:linear-gradient(135deg,var(--primary),var(--primary-light));color:var(--paper)}
+  .cta.primary:hover{background:linear-gradient(135deg,var(--primary),var(--primary-light))}
 
   /* SHOWCASE — 7×4 cell grid, each cell = 1ft. Panels occupy cells matching their real proportions.
      Layout (1 cell = 1 ft):
