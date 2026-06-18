@@ -114,7 +114,7 @@ Add a "Checkout" button in the room visualizer page that allows users to review 
 - (Details of checkout page/modal content: TBD in follow-up task)
 
 **Visual style:**
-- Use accent color (yellow) for fill, navy text, matching existing CTA buttons
+- Use accent color (peach-red #e26167) for fill, navy text, matching existing CTA buttons
 - Hover state: standard button hover
 - Disabled state: if cart is empty, button should be disabled or show "No Panels Selected" state
 
@@ -803,3 +803,50 @@ Replace all instances of the Ahata logo with the new Audial logo. The new logo S
 ✅ assets/ folder contains only Audial logo files
 ✅ CLAUDE.md updated with new brand name
 ✅ Desktop and mobile nav both show correct logo
+
+---
+
+## Task #DES-23: Update Website Color Palette
+- **Status:** DONE (committed `79d646d`)
+- **Priority:** HIGH
+- **File:** index.html, configurator.html, room-visualizer.html, how-it-works.html, about.html
+
+### Goal
+Replace accent color from yellow (#ecad49) to peach-red (#e26167) across the entire website. Rework hover states to use primary→primary-light gradient instead of flat accent fills. Update hero heading color treatment.
+
+### Final Palette (as implemented)
+```
+--primary:       #093d53   (Navy — dominant brand color, borders, text, dark surfaces, selection states)
+--primary-light: #007da6   (Teal blue — gradient companion to primary on button/tile hover states)
+--accent:        #e26167   (Peach-red — CTA fills, brand dot ◆, accent words, text hover highlights)
+--shadow:        #00171f   (Near-black — drop shadow tints, modal backdrops only)
+--paper:         #f2f2f9   (Off-white — page backgrounds, card backgrounds, negative space)
+```
+
+### What changed
+1. **Accent token swap** — `--accent` changed from `#ecad49` (yellow) to `#e26167` (peach-red) in `:root` of all 5 HTML pages. Propagates to all 135 usages site-wide.
+2. **Hero heading** — On `index.html`, `.word-as` changed from `var(--primary-light)` to `var(--primary)` so "SOUND AS" reads in dark blue and "ART" in peach-red.
+3. **Button/tile hover gradients** — Flat `background:var(--accent)` hover states replaced with `linear-gradient(135deg, var(--primary), var(--primary-light))` + `color:var(--paper)`. Affected:
+   - `.cta:hover` and `.cta.primary:hover` (index.html)
+   - `.action-btn.dup:hover` (configurator.html)
+   - `.cart-banner button:hover` (room-visualizer.html)
+   - `.side-wall-label:hover` (room-visualizer.html)
+   - `.dp-save:hover` (room-visualizer.html)
+4. **Disabled button hovers** — Updated text color from `--ink` to `--paper` for contrast on peach-red background (both configurator.html and room-visualizer.html).
+5. **Color palette reference** — Old `Color Palate_2.jpg` replaced with `Color Palate_Final.png` in `design-references/color-palette/`.
+
+### Color usage rules
+- **Dark blue + peach-red** are the dominant color pair
+- **Primary light** is demoted — used only as gradient companion to primary on hover backgrounds, not standalone
+- **Text hover highlights** (nav links, footer links, labels) stay as `var(--accent)` (peach-red)
+- **Active/selection states** (selected panel, active button) use `--ink` (navy) as before
+
+### Acceptance Criteria
+- [x] All CSS `--accent` variables updated to `#e26167` on all 5 pages
+- [x] Button/tile hover states use primary→primary-light gradient
+- [x] Hero heading: "SOUND AS" in dark blue, "ART" in peach-red
+- [x] Accent color (#e26167) used consistently for CTAs, text highlights, and brand dots
+- [x] Primary light (#007da6) used only as gradient companion, not as dominant standalone color
+- [x] Text remains legible across all backgrounds
+- [x] CLAUDE.md color tokens and usage rules updated
+- [x] Color palette reference image updated
