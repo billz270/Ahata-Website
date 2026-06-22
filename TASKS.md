@@ -854,20 +854,71 @@ Replace accent color from yellow (#ecad49) to peach-red (#e26167) across the ent
 ---
 
 ## Task #DEV-24: Swap Nav Button Order & Fix Dividing Lines
-- **Status:** DONE
+- **Status:** TODO
 - **Priority:** HIGH
-- **File:** index.html
+- **File:** index.html (and potentially all HTML files if nav is shared)
 
 ### Goal
-Swap "Design Panels" and "Visualize Space" button order in the homepage step-grid so "Design Panels" comes first. Fix missing dividing lines between the four step cards.
+Swap "Design Panels" and "Visualize Room" button order in the sub-header navigation so "Design Panels" comes first. Fix the missing dividing lines between all four buttons.
 
-### What changed
-1. **Button swap** — Swapped the first two `.step-card` elements in `.step-grid`. Design Panels is now step 01, Visualize Space is step 02. Each card's `href`, icon SVG, title, and description moved together. Main nav and mobile menu already had Design first across all 5 pages.
-2. **Dividing lines fix** — Switched from container `border` + per-card `border-right` (with `:last-child` removal) to the shared-border pattern used elsewhere in the codebase: `.step-grid` gets `border-top` + `border-left`, each `.step-card` gets `border-right` + `border-bottom`. Removed `.step-card:last-child{border-right:none}`.
-3. **Reveal animation fix** — Per-card `transform` during scroll-reveal created separate GPU layers, causing card 2's layer to paint over card 1's right border (flicker/blink at rest). Fix: moved `reveal` class from individual `.step-card` elements to the parent `.step-grid` so the grid slides up as one unit. Added staggered opacity fade-in per card via `nth-child` transition-delays (0s, 0.12s, 0.24s, 0.36s) so cards still appear sequentially. Also narrowed `.reveal` transition from `all` to `opacity,transform` and changed end state from `transform:translateY(0)` to `transform:none` to avoid residual stacking contexts.
+### Behavior Spec
+
+**Button order change:**
+- Current order: Visualize | Design | How It Works | About Us
+- New order: Design Panels | Visualize Room | How It Works | About Us
+
+**Dividing lines fix:**
+- Vertical dividing lines should appear between all four buttons
+- Lines should match existing styling (color, thickness)
+- Check if lines exist in HTML but are hidden via CSS, or if they're missing from markup entirely
+
+**Scope:**
+- If the nav is shared across all 5 pages, update all files
+- If index-only, update index.html only
 
 ### Acceptance Criteria
-✅ "Design Panels" is the first button (01), "Visualize Space" is second (02)
+✅ "Design Panels" is the first button, "Visualize Room" is second
 ✅ Vertical dividing lines visible between all four buttons
 ✅ Desktop and mobile both reflect the change
 ✅ All button links still navigate to correct pages
+
+---
+
+## Task #DES-25: Unify Notification Band Design Across Configurator and Visualizer
+- **Status:** TODO
+- **Priority:** MEDIUM
+- **File:** configurator.html, room-visualizer.html
+
+### Goal
+Make the notification bands on both the configurator and room visualizer pages visually identical, using the same grid mosaic pattern with updated peach accent color.
+
+### What to change
+
+**Configurator band ("Room Plan Loaded"):**
+- Add the same grid mosaic pattern gradient that exists on the visualizer band (DES-5).
+- Pattern fades in from left (0% opacity) to right (~70% opacity), same behavior as visualizer.
+- Text on the left remains fully legible with no pattern interference.
+
+**Color update (both bands):**
+- Band background: update to use new accent peach (#e26167) instead of the current blue/navy.
+- Mosaic pattern: update to use peach tones (not blue).
+- Dismiss button: solid background (#093d53 or #00171f), white text. No gradient — solid fill on both pages.
+- Dismiss button hover: white background, dark text (or inverse — keep consistent across both pages).
+
+**Dismiss button consistency:**
+- Both pages must use the same solid dismiss button style. Currently the visualizer has a gradient button and the configurator has a solid button. Standardize to solid on both.
+
+### Constraints
+- Do not change band layout, text content, or functionality.
+- Do not change the mosaic pattern itself — only its color.
+- Pattern behavior (left-to-right gradient reveal) stays the same.
+- Text legibility is non-negotiable — pattern never touches the text area.
+
+### Acceptance Criteria
+- [ ] Configurator band has the same grid mosaic pattern as the visualizer band
+- [ ] Both bands use peach (#e26167) as the background/pattern color
+- [ ] Dismiss button is solid (not gradient) on both pages
+- [ ] Dismiss button styling is identical on both pages
+- [ ] Dismiss button hover state is consistent on both pages
+- [ ] Text remains fully legible on both bands
+- [ ] Pattern gradient behavior identical on both pages (left 0% → right ~70%)
