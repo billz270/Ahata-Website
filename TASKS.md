@@ -850,3 +850,24 @@ Replace accent color from yellow (#ecad49) to peach-red (#e26167) across the ent
 - [x] Text remains legible across all backgrounds
 - [x] CLAUDE.md color tokens and usage rules updated
 - [x] Color palette reference image updated
+
+---
+
+## Task #DEV-24: Swap Nav Button Order & Fix Dividing Lines
+- **Status:** DONE
+- **Priority:** HIGH
+- **File:** index.html
+
+### Goal
+Swap "Design Panels" and "Visualize Space" button order in the homepage step-grid so "Design Panels" comes first. Fix missing dividing lines between the four step cards.
+
+### What changed
+1. **Button swap** — Swapped the first two `.step-card` elements in `.step-grid`. Design Panels is now step 01, Visualize Space is step 02. Each card's `href`, icon SVG, title, and description moved together. Main nav and mobile menu already had Design first across all 5 pages.
+2. **Dividing lines fix** — Switched from container `border` + per-card `border-right` (with `:last-child` removal) to the shared-border pattern used elsewhere in the codebase: `.step-grid` gets `border-top` + `border-left`, each `.step-card` gets `border-right` + `border-bottom`. Removed `.step-card:last-child{border-right:none}`.
+3. **Reveal animation fix** — Per-card `transform` during scroll-reveal created separate GPU layers, causing card 2's layer to paint over card 1's right border (flicker/blink at rest). Fix: moved `reveal` class from individual `.step-card` elements to the parent `.step-grid` so the grid slides up as one unit. Added staggered opacity fade-in per card via `nth-child` transition-delays (0s, 0.12s, 0.24s, 0.36s) so cards still appear sequentially. Also narrowed `.reveal` transition from `all` to `opacity,transform` and changed end state from `transform:translateY(0)` to `transform:none` to avoid residual stacking contexts.
+
+### Acceptance Criteria
+✅ "Design Panels" is the first button (01), "Visualize Space" is second (02)
+✅ Vertical dividing lines visible between all four buttons
+✅ Desktop and mobile both reflect the change
+✅ All button links still navigate to correct pages
