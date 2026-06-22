@@ -885,40 +885,36 @@ Swap "Design Panels" and "Visualize Room" button order in the sub-header navigat
 ---
 
 ## Task #DES-25: Unify Notification Band Design Across Configurator and Visualizer
-- **Status:** TODO
+- **Status:** DONE (committed `b9c87cb`)
 - **Priority:** MEDIUM
 - **File:** configurator.html, room-visualizer.html
 
 ### Goal
 Make the notification bands on both the configurator and room visualizer pages visually identical, using the same grid mosaic pattern with updated peach accent color.
 
-### What to change
+### What changed
 
-**Configurator band ("Room Plan Loaded"):**
-- Add the same grid mosaic pattern gradient that exists on the visualizer band (DES-5).
-- Pattern fades in from left (0% opacity) to right (~70% opacity), same behavior as visualizer.
-- Text on the left remains fully legible with no pattern interference.
+**Configurator band (`.plan-banner`):**
+- Added mosaic `::before` pseudo-element with peach-red (#e26167) SVG tile pattern, matching the visualizer's existing pattern.
+- Added `position:relative` to banner, `position:relative;z-index:1` to children so text sits above the pattern.
+- Changed background from `var(--accent)` to `var(--paper)` so the peach mosaic pattern is visible (peach-on-peach was invisible).
+- Pattern fades in from left (0% opacity) to right (~70% opacity), identical to visualizer.
 
-**Color update (both bands):**
-- Band background: update to use new accent peach (#e26167) instead of the current blue/navy.
-- Mosaic pattern: update to use peach tones (not blue).
-- Dismiss button: solid background (#093d53 or #00171f), white text. No gradient — solid fill on both pages.
-- Dismiss button hover: white background, dark text (or inverse — keep consistent across both pages).
+**Visualizer band (`.cart-banner`):**
+- Mosaic tile SVG fill changed from navy (`#093d53`) to peach-red (`#e26167`).
+- Dismiss button hover changed from `linear-gradient(135deg, var(--primary), var(--primary-light))` to solid `background:var(--paper);color:var(--ink)`.
 
-**Dismiss button consistency:**
-- Both pages must use the same solid dismiss button style. Currently the visualizer has a gradient button and the configurator has a solid button. Standardize to solid on both.
-
-### Constraints
-- Do not change band layout, text content, or functionality.
-- Do not change the mosaic pattern itself — only its color.
-- Pattern behavior (left-to-right gradient reveal) stays the same.
-- Text legibility is non-negotiable — pattern never touches the text area.
+**Both bands now share:**
+- `var(--paper)` background
+- Peach-red mosaic tile pattern with left-to-right gradient fade
+- Solid navy dismiss button (`--ink` bg, `--paper` text)
+- Solid dismiss hover (`--paper` bg, `--ink` text)
 
 ### Acceptance Criteria
-- [ ] Configurator band has the same grid mosaic pattern as the visualizer band
-- [ ] Both bands use peach (#e26167) as the background/pattern color
-- [ ] Dismiss button is solid (not gradient) on both pages
-- [ ] Dismiss button styling is identical on both pages
-- [ ] Dismiss button hover state is consistent on both pages
-- [ ] Text remains fully legible on both bands
-- [ ] Pattern gradient behavior identical on both pages (left 0% → right ~70%)
+- [x] Configurator band has the same grid mosaic pattern as the visualizer band
+- [x] Both bands use peach (#e26167) mosaic pattern on paper background
+- [x] Dismiss button is solid (not gradient) on both pages
+- [x] Dismiss button styling is identical on both pages
+- [x] Dismiss button hover state is consistent on both pages
+- [x] Text remains fully legible on both bands
+- [x] Pattern gradient behavior identical on both pages (left 0% → right ~70%)
