@@ -136,17 +136,18 @@
   .panel-3d-container.grabbing{cursor:grabbing}
   .panel-3d-container.image-mode{cursor:default}
 
-  .scene-wrap{transform-style:preserve-3d;transition:transform 0.15s ease-out;position:relative}
+  .scene-wrap{transform-style:preserve-3d;transition:transform 0.15s ease-out;position:relative;transform:perspective(1800px)}
   .panel-3d{transform-style:preserve-3d;transition:transform 0.12s ease-out;position:relative;will-change:transform}
 
   .panel-face,.panel-back{position:absolute;top:0;left:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-  .panel-side{position:absolute;top:0;left:0}
+  .panel-side{position:absolute;top:0;left:0;outline:1px solid transparent;will-change:transform}
 
   /* FRONT FACE: always edge-to-edge artwork when image present. No wrap-inset here. */
   .panel-face{
     background:#FAFAF8;border:1.5px solid var(--ink);
     overflow:hidden;z-index:2;
     transform:translateZ(0.01px);
+    outline:1px solid transparent;
   }
   .panel-face.has-image{background:transparent}
 
@@ -173,17 +174,19 @@
   /* SIDES: wood base + fabric overlay per wrap mode.
      Gradient orientation matters: the lighter "edge" tone should sit where the wood meets the FRONT face. */
   .panel-side{background:linear-gradient(to right,var(--wood-edge),var(--wood-mid) 60%,var(--wood));z-index:1}
-  /* LEFT: front edge is at left (x=0) — default gradient with edge at left is correct */
-  /* RIGHT: front edge is at right (x=DEPTH) — flip gradient */
-  .panel-side.right{background:linear-gradient(to left,var(--wood-edge),var(--wood-mid) 60%,var(--wood))}
+  /* LEFT: inner edge = left (ink), outer edge = right (wood) */
+  .panel-side.left{border-left:1.5px solid var(--ink);border-right:1px solid var(--wood)}
+  /* RIGHT: inner edge = right (ink), outer edge = left (wood) */
+  .panel-side.right{background:linear-gradient(to left,var(--wood-edge),var(--wood-mid) 60%,var(--wood));border-right:1.5px solid var(--ink);border-left:1px solid var(--wood)}
   .wood-dark-scene .panel-side{background:linear-gradient(to right,#0A0500,#1A0F08 60%,var(--wood-dark))}
-  .wood-dark-scene .panel-side.right{background:linear-gradient(to left,#0A0500,#1A0F08 60%,var(--wood-dark))}
-  /* TOP: front edge at top — gradient goes top (light) to bottom (dark) */
-  .panel-side.top{background:linear-gradient(to bottom,var(--wood-edge),var(--wood-mid) 60%,var(--wood))}
-  /* BOTTOM: front edge at bottom — gradient goes bottom (light) to top (dark) */
-  .panel-side.bottom{background:linear-gradient(to top,var(--wood-edge),var(--wood-mid) 60%,var(--wood))}
-  .wood-dark-scene .panel-side.top{background:linear-gradient(to bottom,#0A0500,#1A0F08 60%,var(--wood-dark))}
-  .wood-dark-scene .panel-side.bottom{background:linear-gradient(to top,#0A0500,#1A0F08 60%,var(--wood-dark))}
+  .wood-dark-scene .panel-side.left{border-right-color:var(--wood-dark)}
+  .wood-dark-scene .panel-side.right{background:linear-gradient(to left,#0A0500,#1A0F08 60%,var(--wood-dark));border-left-color:var(--wood-dark)}
+  /* TOP: front edge at top — gradient goes top (light) to bottom (dark). Inner edge (top) gets ink border to bridge face seam. */
+  .panel-side.top{background:linear-gradient(to bottom,var(--wood-edge),var(--wood-mid) 60%,var(--wood));border-top:1.5px solid var(--ink);border-bottom:1px solid var(--wood)}
+  /* BOTTOM: front edge at bottom — gradient goes bottom (light) to top (dark). Inner edge (bottom) gets ink border. */
+  .panel-side.bottom{background:linear-gradient(to top,var(--wood-edge),var(--wood-mid) 60%,var(--wood));border-bottom:1.5px solid var(--ink);border-top:1px solid var(--wood)}
+  .wood-dark-scene .panel-side.top{background:linear-gradient(to bottom,#0A0500,#1A0F08 60%,var(--wood-dark));border-bottom-color:var(--wood-dark)}
+  .wood-dark-scene .panel-side.bottom{background:linear-gradient(to top,#0A0500,#1A0F08 60%,var(--wood-dark));border-top-color:var(--wood-dark)}
 
   /* FABRIC WRAP on sides:
      HALF-WRAP: black fabric covers the front-half of each side (the half closer to the front face)

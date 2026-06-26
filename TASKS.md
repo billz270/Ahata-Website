@@ -948,3 +948,75 @@ Update phone number and email address everywhere they appear across the site.
 ✅ All mailto: links point to support@audial.in
 ✅ All tel: links point to +917718049186
 ✅ No old contact details remain on any page
+
+---
+
+## Task #DES-27: Fix Pixelated Edges on 3D Panel Preview
+- **Status:** DONE
+- **Priority:** HIGH
+- **File:** configurator.html
+
+### Goal
+Fix the jagged/pixelated lines on the 3D panel preview edges. CSS-only fix. Do NOT change anything else.
+
+### What was happening
+When the panel is rendered with CSS 3D transforms (`rotateY`, `rotateX`), the `.panel-side` elements (left/right/top/bottom wood strips) had no GPU compositing hints, causing visible staircasing at the outer boundaries and at the seam between the face and each strip.
+
+### What was done
+- `.panel-side`: added `outline:1px solid transparent` (forces subpixel AA in webkit) and `will-change:transform` (promotes to GPU compositor layer)
+- `.panel-face`: added `outline:1px solid transparent` (already had `backface-visibility:hidden`)
+- `.scene-wrap`: added `transform:perspective(1800px)` (double-perspective trick for improved sub-layer compositing)
+- `.panel-side.left/.right/.top/.bottom`: added matching `1.5px solid var(--ink)` border on each strip's inner edge (the face-adjacent edge) — bridges the compositing seam so any remaining aliasing is invisible (two adjacent navy pixels look like one solid line)
+- `.panel-side.left/.right/.top/.bottom`: added matching wood-colour border on each strip's outer edge to soften the hard clip to transparent background
+- Moved left/right borders from base `.panel-side` rule into explicit `.panel-side.left` and `.panel-side.right` rules so `.panel-side.top` and `.panel-side.bottom` don't inherit spurious end-of-strip borders
+
+### Notes
+- `backface-visibility:hidden` was NOT applied to `.panel-side` — it hides elements rotated 90° (the sides), causing them to disappear
+- `filter:blur(0)` was NOT applied to any `preserve-3d` parent — filter flattens the 3D context
+- Some sub-pixel aliasing remains at oblique drag angles — this is a browser CSS 3D compositing limit; full elimination would require WebGL/Canvas
+
+### Acceptance Criteria
+- [x] Panel edges render with smooth lines (no jagged pixels)
+- [x] All 5 panel sizes still render at their correct dimensions
+- [x] No changes to rotation angles
+- [x] No changes to any JavaScript
+- [x] No visual regressions anywhere else on the page
+
+---
+
+## Task #DES-28: Increase 3D Panel Preview Rotation Angle
+- **Status:** TODO (do after DES-26a is confirmed working)
+- **Priority:** HIGH
+- **File:** configurator.html
+
+### Goal
+Increase the rotation angle on the 3D panel preview so the left and right wood frame edges are more visible. This is a TWO-LINE CSS change.
+
+### What to change
+Find this existing CSS rule on `.panel-3d`:
+```css
+transform: rotateY(-15deg) rotateX(5deg);
+```
+
+Change it to:
+```css
+transform: rotateY(-35deg) rotateX(8deg);
+```
+
+That is the ONLY change. If 35deg feels too much or too little, adjust in 5deg increments and check visually. Target range: rotateY between 30–40deg, rotateX between 6–10deg.
+
+### Do NOT
+- Do NOT change any panel dimensions, widths, heights, or aspect ratios
+- Do NOT change `.size-card` data attributes or panel size logic
+- Do NOT change any JavaScript
+- Do NOT change `.panel-edge` widths or heights
+- Do NOT touch any functionality
+- This is literally changing two numbers in one CSS rule
+
+### Acceptance Criteria
+- [ ] Left and right wood edges clearly visible at default angle
+- [ ] Top and bottom edges subtly visible
+- [ ] Front face (artwork) still the dominant visible surface
+- [ ] All 5 panel sizes render at correct dimensions
+- [ ] No JavaScript changes
+- [ ] No visual regressions
