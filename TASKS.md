@@ -1073,40 +1073,40 @@ Add a new Step 6 (fiberglass type selection/application) to the 8-step manufactu
 
 ---
 
-## Task #CON-30: Website Text Content Update (Homepage + How It Works)
-- **Status:** TODO
+## Task #CON-30: Website Text Content Update (Homepage + How It Works + About)
+- **Status:** DONE
 - **Priority:** MEDIUM
-- **File:** index.html, how-it-works.html
+- **File:** index.html, how-it-works.html, about.html
 
 ### Goal
-Update text content on two existing pages. Text-only changes — no layout, styling, or structural modifications.
+Update text content across three existing pages, per `website-content/Website Content Update.docx`. Text-only changes — no layout, styling, or structural modifications. Scope expanded from the original 2-page/4-item draft after reviewing the full source doc, which also covered about.html and three more how-it-works.html sections.
 
-### What to change
+### What changed
 
 **index.html — Hero section:**
-- Hero heading: change to "Your Sound. Your Art." (replace current "SOUND AS ART" treatment)
-- Hero sub-heading: change to "Hand-built acoustic panels that carry your artwork. Clean, precise sound treatment you can personalize for your home studio, theater, or other listening spaces."
+- Hero heading: "SOUND AS ART." → "Your Sound. Your Art." Restructured from 3 lines/spans (`.word-sound`/`.word-as`/`.word-art`) to 2 lines (`.word-sound` navy, `.word-art` peach) — `.word-as` span dropped since the new copy has no third phrase. CSS untouched.
+- Hero sub-heading: updated to "Hand-built acoustic panels that carry your artwork. Clean, precise sound treatment you can personalize for your home studio, theater, or other listening spaces."
 
-**how-it-works.html — Misconceptions tile section:**
+**how-it-works.html:**
+- Hero description: "Acoustic panels aren't magic — they're physics..." → "Acoustic panels are physics-based insulation implementations..."
+- "What They Do" section title: "Sound you can feel quietly." → "No More Reflections. Just You & Your Sound"
+- Point 4 (`.benefit-desc`) wording: "ugly foam" → "basic foam"
+- Misconception tile 01 body (`.tile-reality`): replaced per doc
+- Misconception tile 03 header (`.tile-reality-head`): "Partially — and only at high frequencies." → "Partials only at high-frequencies."
 
-- **Tile 01** — update body content only (`.tile-reality` text, NOT the `.tile-reality-head`):
-  "Soundproofing stops sound from passing through a wall. It is about mass and isolation, and it is expensive construction work. Absorption stops sound from bouncing around inside a room. That's what our panels do. You can have one without the other, and most people only actually need absorption."
-
-- **Tile 03** — update header only (`.tile-reality-head` text, NOT the body):
-  Change from: "Partially — and only at high frequencies."
-  Change to: "Partials only at high-frequencies."
-
-### Do NOT
-- Do not change any CSS, layout, or styling
-- Do not change any JavaScript
-- Do not modify any other sections on either page
-- Do not change tile 02 content
-- Do not alter the HTML structure of any element
+**about.html:**
+- Hero title: "Built by hand in Mumbai." → "Customized Hand-Built Acoustic Panels" (accent span moved to "Acoustic Panels" — judgment call, doc didn't specify which phrase to highlight)
+- "Our Story" h2: "From a spare room to a working craft." → "Reimagining Standard Acoustic Paneling"
+- Story body: full 4-paragraph rewrite → 3 paragraphs per doc
+- Value 01 ("Materials that work") body updated to mention rockwool/pinewood/fibreglass backing
+- Value 02 title changed to "Orbed-Based Production" (transcribed literally from doc — user confirmed keep as-is despite reading as a likely typo for "Order-Based"); body updated (doc's phrasing "Panels made in as per the order, one at a time" kept verbatim, reads slightly awkward — worth a founder re-check)
+- Value 03 ("Honest about fit") body: "the goal" → "the main objective"
 
 ### Acceptance Criteria
-- [ ] Homepage hero heading reads "Your Sound. Your Art."
-- [ ] Homepage hero sub-heading updated to new copy
-- [ ] Misconception tile 01 body text replaced with new content
-- [ ] Misconception tile 03 header text changed to "Partials only at high-frequencies."
-- [ ] No other content on either page is modified
-- [ ] No CSS or JS changes
+- [x] Homepage hero heading reads "Your Sound. Your Art."
+- [x] Homepage hero sub-heading updated to new copy
+- [x] how-it-works.html hero description, section title, and Point 4 updated
+- [x] Misconception tile 01 body text replaced with new content
+- [x] Misconception tile 03 header text changed to "Partials only at high-frequencies."
+- [x] about.html hero title, Our Story, and all 3 value points updated
+- [x] No CSS or JS changes
