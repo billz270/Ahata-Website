@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none" stroke="#434c56" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-label="Apply Fiberglass Screen">
+  
+  <rect x="16" y="16" width="88" height="88"></rect>
+
+  
+  <line x1="30" y1="16" x2="30" y2="104"></line>
+  <line x1="44" y1="16" x2="44" y2="104"></line>
+  <line x1="60" y1="16" x2="60" y2="104"></line>
+  <line x1="76" y1="16" x2="76" y2="104"></line>
+  <line x1="90" y1="16" x2="90" y2="104"></line>
+
+  
+  <line x1="16" y1="30" x2="104" y2="30"></line>
+  <line x1="16" y1="44" x2="104" y2="44"></line>
+  <line x1="16" y1="60" x2="104" y2="60"></line>
+  <line x1="16" y1="76" x2="104" y2="76"></line>
+  <line x1="16" y1="90" x2="104" y2="90"></line>
+
+  
+  <circle cx="23" cy="23" r="2"></circle>
+  <circle cx="97" cy="23" r="2"></circle>
+  <circle cx="23" cy="97" r="2"></circle>
+  <circle cx="97" cy="97" r="2"></circle>
+</svg>

@@ -985,7 +985,7 @@ When the panel is rendered with CSS 3D transforms (`rotateY`, `rotateX`), the `.
 ---
 
 ## Task #DES-28: Increase 3D Panel Preview Rotation Angle
-- **Status:** TODO (do after DES-26a is confirmed working)
+- **Status:** DONE (committed `e526c0a`)
 - **Priority:** HIGH
 - **File:** configurator.html
 
@@ -1014,9 +1014,99 @@ That is the ONLY change. If 35deg feels too much or too little, adjust in 5deg i
 - This is literally changing two numbers in one CSS rule
 
 ### Acceptance Criteria
-- [ ] Left and right wood edges clearly visible at default angle
-- [ ] Top and bottom edges subtly visible
-- [ ] Front face (artwork) still the dominant visible surface
-- [ ] All 5 panel sizes render at correct dimensions
-- [ ] No JavaScript changes
-- [ ] No visual regressions
+- [x] Left and right wood edges clearly visible at default angle
+- [x] Top and bottom edges subtly visible
+- [x] Front face (artwork) still the dominant visible surface
+- [x] All 5 panel sizes render at correct dimensions
+- [~] No JavaScript changes — JS updated to fix drag clamping and per-size-selection reset
+- [x] No visual regressions
+
+---
+
+## Task #DES-29: Add New Step 6 to Manufacturing Process Timeline on How It Works Page
+- **Status:** DONE
+- **Priority:** MEDIUM
+- **File:** how-it-works.html
+
+### Goal
+Add a new Step 6 (fiberglass type selection/application) to the 8-step manufacturing process timeline. Shift the existing steps 6 and 7 to become steps 7 and 8.
+
+### What to change
+
+**Current timeline (7 steps):**
+1. Source Wood
+2. Create Frame
+3. Install Rockwool
+4. Add Fiberglass Backing
+5. Add Back Support
+6. Apply Acoustic Cloth
+7. Package & Ship
+
+**New timeline (8 steps):**
+1. Source Wood
+2. Create Frame
+3. Install Rockwool
+4. Add Fiberglass Backing
+5. Add Back Support
+6. [NEW STEP — fiberglass type/mesh step]
+7. Apply Acoustic Cloth
+8. Package & Ship
+
+### Implementation
+- Retrieve the new Step 6 SVG illustration from `/design-references/manufacturing-process/`
+- Insert it into the timeline as Step 06 (between current Step 5 and Step 6)
+- Re-number all subsequent steps (old Step 6 → Step 7, old Step 7 → Step 8)
+- Maintain consistent styling, sizing, and animation behavior with existing steps
+- Update the step count indicator (was "7 steps," now "8 steps") if displayed anywhere
+
+### Constraints
+- Do not change the layout or animation of existing steps
+- Do not change the timeline structure or responsiveness
+- Maintain the line-draw animation timing for the new step
+
+### Acceptance Criteria
+- [x] New Step 6 visible in the timeline
+- [x] Original steps 6 and 7 renumbered to 7 and 8
+- [x] SVG illustration from `/design-references/manufacturing-process/` correctly integrated
+- [x] Animation behavior consistent with other steps
+- [x] All 8 steps render correctly on desktop and mobile
+
+---
+
+## Task #CON-30: Website Text Content Update (Homepage + How It Works)
+- **Status:** TODO
+- **Priority:** MEDIUM
+- **File:** index.html, how-it-works.html
+
+### Goal
+Update text content on two existing pages. Text-only changes — no layout, styling, or structural modifications.
+
+### What to change
+
+**index.html — Hero section:**
+- Hero heading: change to "Your Sound. Your Art." (replace current "SOUND AS ART" treatment)
+- Hero sub-heading: change to "Hand-built acoustic panels that carry your artwork. Clean, precise sound treatment you can personalize for your home studio, theater, or other listening spaces."
+
+**how-it-works.html — Misconceptions tile section:**
+
+- **Tile 01** — update body content only (`.tile-reality` text, NOT the `.tile-reality-head`):
+  "Soundproofing stops sound from passing through a wall. It is about mass and isolation, and it is expensive construction work. Absorption stops sound from bouncing around inside a room. That's what our panels do. You can have one without the other, and most people only actually need absorption."
+
+- **Tile 03** — update header only (`.tile-reality-head` text, NOT the body):
+  Change from: "Partially — and only at high frequencies."
+  Change to: "Partials only at high-frequencies."
+
+### Do NOT
+- Do not change any CSS, layout, or styling
+- Do not change any JavaScript
+- Do not modify any other sections on either page
+- Do not change tile 02 content
+- Do not alter the HTML structure of any element
+
+### Acceptance Criteria
+- [ ] Homepage hero heading reads "Your Sound. Your Art."
+- [ ] Homepage hero sub-heading updated to new copy
+- [ ] Misconception tile 01 body text replaced with new content
+- [ ] Misconception tile 03 header text changed to "Partials only at high-frequencies."
+- [ ] No other content on either page is modified
+- [ ] No CSS or JS changes
